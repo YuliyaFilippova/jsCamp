@@ -1,0 +1,94 @@
+/*--------------------- Responsive -------------------------*/
+
+@media (max-width: 1024px) {
+  .container {
+    width: var(--width80);
+  }
+}
+
+@media (max-width: 768px) {
+  li {
+    width: var(--width100);
+  }
+}
+
+@media (max-width: 580px) {
+}
+
+@media (max-width: 425px) {
+  header {
+    height: var(--height60);
+    margin-top: var(--height24);
+  }
+
+  .logo {
+    width: var(--width50);
+  }
+
+  .logo img,
+  .search,
+  li,
+  .users,
+  .user-item,
+  .login-mobile {
+    width: var(--width100);
+  }
+
+  .logins,
+  .userpic {
+    display: none;
+  }
+
+  .user-mobile {
+    display: block;
+    position: relative;
+    font-size: 2rem;
+  }
+
+  .user-mobile i {
+    color: white;
+  }
+
+  .login-mobile {
+    display: none;
+    position: absolute;
+    top: 3rem;
+    right: 0;
+    background-color: white;
+    border: 1px solid var(--search-color);
+    border-radius: 5px;
+  }
+
+  .user-mobile:hover .login-mobile {
+    display: block;
+  }
+
+  .user-item {
+    background: white;
+    border-bottom: 1px solid var(--mobile-border);
+    white-space: nowrap;
+    display: block;
+    padding: var(--padding5) 1rem;
+    white-space: nowrap;
+  }
+
+  .status {
+    top: 0.5em;
+    left: 0.7em;
+    margin-right: 1rem;
+  }
+
+  .logins,
+  .logo-footer,
+  .contacts div p {
+    display: none;
+  }
+
+  footer {
+    height: var(--height40);
+  }
+
+  .contacts {
+    width: var(--width100);
+  }
+}

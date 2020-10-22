@@ -1,0 +1,121 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg-body: rgba(255, 255, 255, 1);
+  --bg-shadow: rgba(0, 0, 0, 0.7);
+  --bg-ok-button: rgba(83, 93, 181, 1);
+  --lines-gray: rgba(148, 134, 134, 0.78);
+  --modal-padding: 2rem;
+}
+
+html {
+  font-size: 14px;
+  font-family: Open "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+
+body {
+  background-color: var(--bg-body);
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+
+.wrapper {
+  width: 100%;
+  height: 100vh;
+  background-color: var(--bg-shadow);
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal {
+  position: relative;
+  width: 30%;
+  height: 30%;
+  background-color: var(--bg-body);
+  border-radius: 0.5rem;
+  box-shadow: 0px 0px 21px -4px rgba(0, 0, 0, 0.61);
+  padding: var(--modal-padding);
+}
+
+.modal:before {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  content: "Нажми меня";
+  font-size: 2rem;
+  line-height: 2rem;
+  color: var(--bg-body);
+  position: absolute;
+  top: -4rem;
+  left: 25%;
+  width: 50%;
+  height: 4rem;
+  background-color: var(--bg-ok-button);
+  border-radius: 5px 5px 0 0;
+  opacity: 0.5;
+}
+
+.close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 2rem;
+  height: 2rem;
+  background-color: var(--bg-body);
+  outline: none;
+}
+
+.close:before,
+.close:after {
+  content: "";
+  position: absolute;
+  top: 40%;
+  left: 17%;
+  width: 1.5rem;
+  height: 0.25rem;
+  border-radius: 0.25rem;
+  background: var(--lines-gray);
+}
+
+.close:before {
+  transform: rotate(45deg);
+}
+
+.close:after {
+  transform: rotate(-45deg);
+}
+
+h1 {
+  margin: 1rem auto;
+}
+
+h3 {
+  margin: 1.5rem auto;
+  font-size: 1.3rem;
+}
+
+hr {
+  color: var(--lines-gray);
+}
+
+.ok {
+  position: absolute;
+  bottom: var(--modal-padding);
+  right: var(--modal-padding);
+  width: 4rem;
+  height: 2.5rem;
+  background-color: var(--bg-ok-button);
+  border-radius: 0.3rem;
+  color: var(--bg-body);
+}
