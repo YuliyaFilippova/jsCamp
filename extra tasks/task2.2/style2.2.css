@@ -1,0 +1,290 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg-main: #fff;
+  --bg-border: lightgray;
+  --bg-recommend: rgb(227, 240, 245);
+  --border-radius: 5px;
+
+  --views-height: 2.5rem;
+  --views-color: rgb(22, 22, 94);
+
+  --main-color: #0071c2;
+  --cost-color: #6b6b6b;
+  --descr-color: black;
+  --stars-color: rgb(253, 167, 68);
+  --green-color: rgb(44, 143, 44);
+  --red-color: rgb(204, 41, 0);
+
+  --img-size: 250px;
+}
+
+html {
+  font-size: 14px;
+  font-family: Segoe UI, Roboto;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+}
+
+p {
+  margin: 0.3rem auto;
+  padding: 0.3rem auto;
+  font-size: 1rem;
+  color: var(--descr-color);
+}
+
+.wrapper {
+  width: 60%;
+  border: 1px solid var(--bg-border);
+  border-radius: var(--border-radius);
+  padding: 0.5rem 1rem;
+}
+
+.item {
+  display: grid;
+  grid-template-areas:
+    "picture description"
+    "cost cost";
+  grid-template-columns: 1fr 3fr;
+  grid-template-rows: auto auto;
+  position: relative;
+  border: 1px solid var(--bg-border);
+  border-radius: var(--border-radius);
+  margin: 1rem;
+  padding: 0.5rem 1rem;
+}
+
+.additional {
+  position: absolute;
+  z-index: 10;
+  top: 3rem;
+  left: -1rem;
+  padding: 0.5rem 1rem;
+  background-color: var(--green-color);
+  border-radius: 0 var(--border-radius) var(--border-radius) 0;
+  color: var(--bg-main);
+}
+
+.additional:after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -1rem;
+  width: 0;
+  height: 0;
+  border-top: 1rem solid var(--green-color);
+  border-left: 1rem solid transparent;
+}
+
+.picture {
+  grid-area: picture;
+  position: relative;
+  padding: 0.7rem 2rem 0 0;
+}
+
+.picture img {
+  width: var(--img-size);
+  height: var(--img-size);
+  border-radius: var(--border-radius);
+}
+
+.likes {
+  position: absolute;
+  top: 1rem;
+  right: 3rem;
+  font-size: 2rem;
+}
+.likes i {
+  cursor: pointer;
+  color: var(--cost-color);
+}
+
+.likes i:hover {
+  color: var(--red-color);
+}
+
+.description {
+  grid-area: description;
+}
+
+.title {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.place-name {
+  color: var(--main-color);
+  font-size: 1.5rem;
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+}
+
+.type {
+  margin-right: 0.5rem;
+  padding: 0 1rem;
+  background-color: var(--green-color);
+  border-radius: var(--border-radius);
+  color: var(--bg-main);
+  font-size: 0.9rem;
+}
+
+.stars {
+  color: var(--stars-color);
+  padding: 0 0.8rem;
+}
+
+.fa-thumbs-up {
+  width: 1.5rem;
+  height: 1.5rem;
+  text-align: center;
+  padding-top: 0.2rem;
+  background-color: var(--stars-color);
+  color: var(--bg-main);
+  font-size: 1rem;
+}
+
+.genius {
+  margin: 0 0.5rem;
+  margin-top: 0.5rem;
+  padding: 0.2rem 1rem;
+  background-color: var(--main-color);
+  border-radius: var(--border-radius);
+  color: var(--bg-main);
+  font-size: 0.9rem;
+}
+
+.views {
+  height: var(--views-height);
+  padding: 0 0 0 0.5rem;
+  display: grid;
+  grid-template-areas: "views-in-text mark" "views-count mark";
+  grid-template-columns: 2fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  align-items: center;
+}
+
+.views-in-text {
+  grid-area: views-in-text;
+  color: var(--views-color);
+  font-size: 1.1rem;
+  padding-right: 1rem;
+}
+
+.views-count {
+  grid-area: views-count;
+}
+
+.mark {
+  grid-area: mark;
+  width: var(--views-height);
+  height: var(--views-height);
+  background-color: var(--views-color);
+  border-radius: var(--border-radius) var(--border-radius) var(--border-radius)
+    0;
+  color: var(--bg-main);
+  text-align: center;
+  line-height: calc(var(--views-height) - 0.1rem);
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding: auto 1rem;
+}
+
+.onmap-links,
+.onmap-links a {
+  color: var(--main-color);
+  padding-bottom: 0.5rem;
+}
+
+.onmap-links a:hover {
+  text-decoration: none;
+}
+
+.recommend {
+  margin: 0.2rem auto;
+  padding: 0.2rem 1rem;
+  border-radius: var(--border-radius);
+  background-color: var(--bg-recommend);
+}
+
+.details {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 0.2rem 1rem;
+}
+
+.persons {
+  padding: 0.8rem auto;
+  margin-top: 0.8rem;
+  white-space: nowrap;
+}
+
+.persons i {
+  margin: 0 0.1rem;
+}
+
+.details-items {
+  padding: 0.2rem 1rem;
+}
+
+.font-blue {
+  color: var(--main-color);
+}
+
+.font-green {
+  color: var(--green-color);
+}
+
+.font-red {
+  color: var(--red-color);
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.cost {
+  text-align: right;
+  grid-area: cost;
+}
+
+.cost p,
+.views p {
+  color: var(--cost-color);
+}
+
+.price {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--descr-color);
+}
+
+.old-price {
+  text-decoration: line-through;
+}
+
+.see-avail {
+  cursor: pointer;
+  margin: 0.5rem auto;
+  background-color: var(--main-color);
+  border: 1px solid var(--main-color);
+  border-radius: var(--border-radius);
+  width: 12rem;
+  height: 3rem;
+  color: var(--bg-main);
+  font-size: 1.2rem;
+}
