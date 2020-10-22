@@ -126,13 +126,12 @@ ul {
 .search {
   position: absolute;
   display: none;
-  top: var(--height40);
+  top: 26px;
   right: 0;
   z-index: 5;
   opacity: 0;
   transition: 2s;
   width: var(--width240);
-  /* height: var(--header-height);*/
   padding: var(--padding5);
   border: 1px solid var(--search-color);
   border-radius: 5px;
@@ -176,8 +175,7 @@ input::-webkit-calendar-picker-indicator {
   position: absolute;
   left: 0;
   display: none;
-  /*width: var(--width240);*/
-  bottom: 1.5rem;
+  bottom: 1.7rem;
   border: 1px solid var(--search-color);
   border-radius: 5px;
   background-color: white;
@@ -199,11 +197,11 @@ input::-webkit-calendar-picker-indicator {
 }
 
 .user-item a {
-  font-size: 1rem;
+  font-size: 0.9rem;
   margin: 0 0.5rem;
 }
 
-.user-item:hover{
+.user-item:hover {
   background: linear-gradient(180deg, #f2f2f2 50%, #f2f2f2 100%);
   cursor: pointer;
 }
@@ -213,14 +211,15 @@ input::-webkit-calendar-picker-indicator {
 }
 
 .userpic {
-  width: 2.5em;
-  height: 2.5em;
-  border: 2px solid rgba(255, 245, 0, 0.5);
+  width: var(--userpic-d);
+  height: var(--userpic-d);
+  border: 1px solid var(--accent1);
   border-radius: 50%;
-  background: rgba(255, 245, 0, 0.5);
+  background: rgba(243, 240, 156, 0.5);
   overflow: hidden;
   text-align: center;
-  padding-top: var(--padding10);
+  padding-top: var(--padding2);
+  position: relative;
 }
 
 .main-chat {
@@ -230,10 +229,10 @@ input::-webkit-calendar-picker-indicator {
 
 .status {
   position: absolute;
-  top: 2em;
-  left: 3em;
-  width: 1em;
-  height: 1em;
+  top: 1.3em;
+  left: 2.7em;
+  width: var(--status-d);
+  height: var(--status-d);
   border-radius: 50%;
   z-index: 100;
 }
@@ -282,7 +281,7 @@ textarea {
   border: 0;
   background-color: transparent;
   cursor: pointer;
-  outline:none;
+  outline: none;
 }
 
 .fa-paper-plane {

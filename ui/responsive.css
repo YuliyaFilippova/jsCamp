@@ -12,13 +12,10 @@
   }
 }
 
-@media (max-width: 425px) {
-  .logins,
-  .logo-footer,
-  .contacts div p {
-    display: none;
-  }
+@media (max-width: 580px) {
+}
 
+@media (max-width: 425px) {
   header {
     height: var(--height60);
     margin-top: var(--height24);
@@ -28,41 +25,63 @@
     width: var(--width50);
   }
 
-  .logo img {
-    width: var(--width100);
-  }
-
+  .logo img,
   .search,
+  li,
   .users,
+  .user-item,
   .login-mobile {
     width: var(--width100);
   }
 
-  .user-mobile {
-    display: flex;
-    font-size: 2rem;
-    position: relative;
+  .logins,
+  .userpic {
+    display: none;
   }
 
-  .user-mobile a {
+  .user-mobile {
+    display: block;
+    position: relative;
+    font-size: 2rem;
+  }
+
+  .user-mobile i {
     color: white;
+  }
+
+  .login-mobile {
+    display: none;
+    position: absolute;
+    top: 3rem;
+    right: 0;
+    background-color: white;
+    border: 1px solid var(--search-color);
+    border-radius: 5px;
+  }
+
+  .user-mobile:hover .login-mobile {
+    display: block;
   }
 
   .user-item {
     background: white;
     border-bottom: 1px solid var(--mobile-border);
     white-space: nowrap;
-  }
-  .login-mobile {
-    position: absolute;
-    top: 0;
-    right: 0;
-    z-index: 1000;
-    border: 50px solid red;
+    display: block;
+    padding: var(--padding5) 1rem;
+    white-space: nowrap;
   }
 
-  li {
-    width: var(--width100);
+  .status {
+    top: 0.5em;
+    left: 0.7em;
+    margin-right: 1rem;
+  }
+
+  .logins,
+  .logo-footer,
+  .contacts div p {
+    display: none;
   }
 
   footer {
