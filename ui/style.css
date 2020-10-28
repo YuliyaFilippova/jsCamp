@@ -7,18 +7,20 @@
 }
 
 html {
-  font-family: Ubuntu, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-family: Ubuntu, "Open Sans", sans-serif;
   font-size: 16px;
 }
 
-.wrapper {
-  min-height: calc(100vh - var(--footer-height));
+html,
+.body {
+  height: 100%;
+  width: 100%;
+  position: relative;
 }
 
-header,
-main,
-footer,
+.header,
+.main,
+.footer,
 .container,
 .actions-top,
 .actions-bottom,
@@ -30,10 +32,9 @@ footer,
   flex-flow: row wrap;
   justify-content: space-between;
   align-items: center;
-  /*border: 1px dotted lightskyblue;*/
 }
 
-header {
+.header {
   height: var(--header-height);
   background-color: var(--header-bg);
 }
@@ -64,6 +65,13 @@ ul {
   color: white;
   font-size: 1.3rem;
 }
+.logins a:first-child {
+  font-weight: bold;
+}
+
+.logins a {
+  margin: 0 1rem;
+}
 
 .user-mobile {
   display: none;
@@ -75,12 +83,41 @@ ul {
 }
 
 .main {
-  min-height: calc(100vh - var(--header-height) - var(--footer-height));
+  height: calc(100% - var(--header-height) - var(--footer-height));
+}
+
+.main {
   display: flex;
-  flex-flow: column wrap;
+  flex-flow: column nowrap;
   justify-content: space-between;
   align-items: stretch;
 }
+
+.content {
+  height: calc(100% - var(--height60));
+  overflow-y: auto;
+}
+
+.content::-webkit-scrollbar {
+  height: var(--scrollbar-size);
+  width: var(--scrollbar-size);
+  border-radius: var(--padding5);
+}
+
+.content::-webkit-scrollbar-track {
+  background-color: var(--scrollbar-track-color);
+  border-radius: var(--padding10);
+}
+
+.content::-webkit-scrollbar-thumb:vertical {
+  border-radius: var(--padding10);
+  background: var(--scrollbar-thumb-color);
+}
+
+.content::-webkit-scrollbar-thumb:vertical:hover {
+  background-color: var(--scrollbar-thumb-color-hover);
+}
+
 
 /*--------------------- Load messages block -------------------------*/
 
@@ -126,7 +163,7 @@ ul {
 .search {
   position: absolute;
   display: none;
-  top: 26px;
+  top: 1.6rem;
   right: 0;
   z-index: 5;
   opacity: 0;
@@ -134,7 +171,7 @@ ul {
   width: var(--width240);
   padding: var(--padding5);
   border: 1px solid var(--search-color);
-  border-radius: 5px;
+  border-radius: var(--padding5);
   background-color: white;
 }
 
@@ -154,7 +191,7 @@ ul {
   width: var(--width100);
   height: var(--height30);
   border: 1px solid var(--search-color);
-  border-radius: 5px;
+  border-radius: var(--padding5);
   padding: var(--padding5) var(--padding10);
   margin: var(--padding5) 0;
   color: var(--search-color);
@@ -177,7 +214,7 @@ input::-webkit-calendar-picker-indicator {
   display: none;
   bottom: 1.7rem;
   border: 1px solid var(--search-color);
-  border-radius: 5px;
+  border-radius: var(--padding5);
   background-color: white;
 }
 
@@ -192,7 +229,7 @@ input::-webkit-calendar-picker-indicator {
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
-  border-radius: 5px;
+  border-radius: var(--padding5);
   white-space: nowrap;
 }
 
@@ -229,8 +266,8 @@ input::-webkit-calendar-picker-indicator {
 
 .status {
   position: absolute;
-  top: 1.3em;
-  left: 2.7em;
+  top: 1.3rem;
+  left: 2.7rem;
   width: var(--status-d);
   height: var(--status-d);
   border-radius: 50%;
@@ -254,7 +291,7 @@ li {
   font-size: 0.85rem;
   text-align: justify;
   border: 1px solid var(--search-color);
-  border-radius: 5px;
+  border-radius: var(--padding5);
   background-color: rgba(79, 142, 169, 0.1);
 }
 
@@ -269,7 +306,7 @@ textarea {
   width: var(--width80);
   height: var(--height40);
   border: 0px solid white;
-  border-radius: 10px;
+  border-radius: var(--padding10);
   font-size: 0.9rem;
   line-height: var(--height40);
   color: var(--accent1);
@@ -300,6 +337,7 @@ textarea {
   border: 1px solid var(--header-bg);
   border-radius: 1rem;
   padding: var(--padding2) var(--padding20);
+  margin: var(--padding10) 0;
   font-size: 0.7rem;
   color: var(--header-bg);
 }
@@ -343,7 +381,7 @@ textarea {
 
 /*--------------------- footer -------------------------*/
 
-footer {
+.footer {
   height: var(--footer-height);
   background-color: var(--footer-bg);
 }
