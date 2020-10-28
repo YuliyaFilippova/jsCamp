@@ -16,7 +16,7 @@
 }
 
 @media (max-width: 425px) {
-  header {
+  .header {
     height: var(--height60);
     margin-top: var(--height24);
   }
@@ -84,7 +84,7 @@
     display: none;
   }
 
-  footer {
+  .footer {
     height: var(--height40);
   }
 

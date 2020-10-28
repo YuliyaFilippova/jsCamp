@@ -28,7 +28,7 @@ html {
   font-family: Segoe UI, Roboto;
 }
 
-body {
+.body {
   height: 100vh;
   display: flex;
   flex-flow: row nowrap;
@@ -141,9 +141,20 @@ p {
   font-size: 0.9rem;
 }
 
-.stars {
+.stars,
+.fa-circle {
+  margin: auto 0.5rem;
+}
+
+.stars i {
+  font-size: 1.1rem;
   color: var(--stars-color);
-  padding: 0 0.8rem;
+  padding: 0 0.2rem;
+}
+
+.fa-circle {
+  font-size: 0.3rem;
+  vertical-align: middle;
 }
 
 .fa-thumbs-up {

@@ -11,16 +11,14 @@
         integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
     
 </head>
-<body>
-    <div class="wrapper">
-        <header>
+<body class="body">
+        <header class="header">
             <div class="container">
                 <div class="logo">
                     <a href="#" title="js.talks();"><img src="icons/logo.png" alt="js.talks();"></a>
                 </div>
                 <div class="logins">
-                    <a href="" title="Username"><strong>Username </strong></a>&nbsp;&nbsp;|&nbsp;
-                    <!--<a href="">Sign Up</a>&nbsp;|&nbsp; -->
+                    <a href="" title="Username">Username</a>|
                     <a href="" title="Log Out">Log Out</a>
                 </div>
                 <div class="user-mobile">
@@ -36,111 +34,138 @@
                 </div>
             </div>
         </header>
-        <main>
-            <div class="container main">
-                <div class="actions-top">
-                    <div class="load">
-                        <a href="">More messages...</a>
+        <main class="main container">
+            <div class="actions-top">
+                <div class="load">
+                    <a href="">More messages...</a>
+                </div>
+                <div class="filters">
+                    <a href=""><i class="fas fa-angle-down"></i>Search / Filters</a>
+                    <div class="search">
+                        <form action="">
+                            <select placeholder="Select user">
+                                <option value="1">Select user</option>
+                                <option value="2">Jone</option>
+                                <option value="3">Julia</option>
+                            </select>
+                            <input type="date" placeholder="Choose a date">
+                            <input type="text" placeholder="Search..">
+                        </form>
                     </div>
-                    <div class="filters">
-                        <a href=""><i class="fas fa-angle-down"></i>Search / Filters</a>
-                        <div class="search">
-                            <form action="">
-                                <select name="" id="">
-                                    <option value="1">Select name</option>
-                                    <option value="2">Jone</option>
-                                    <option value="3">Julia</option>
-                                </select>
-                                <input type="date">
-                                <input type="text">
-                            </form>
+                </div>
+            </div>
+            <div class="content">
+                <ul>
+                    <li class="message">
+                        <div class="message-title">
+                            <div class="message-from">Jone Smitt</div>
+                            <div class="message-actions"></div>
+                        </div>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+                        et dolore magna
+                        aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat.
+                        <p class="date">11:37:00 10/08/2020</p>
+                    </li>
+                    <li class="message">
+                        <div class="message-title">
+                            <div class="message-from">Jone Smitt</div>
+                            <div class="message-actions"></div>
+                        </div>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+                        et dolore magna
+                        aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat.
+                        <p class="date">11:37:00 10/08/2020</p>
+                    </li>
+                    <li class="message">
+                        <div class="message-title">
+                            <div class="message-from">Jone Smitt</div>
+                            <div class="message-actions"></div>
+                        </div>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+                        et dolore magna
+                        aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat.
+                        <p class="date">11:37:00 10/08/2020</p>
+                    </li>
+                    <li class="message">
+                        <div class="message-title">
+                            <div class="message-from">Jone Smitt to me</div>
+                            <div class="message-actions"><i class="fas fa-star"></i></div>
+                        </div>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+                        et dolore magna
+                        aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat.
+                        <p class="date">11:37:00 10/08/2020</p>
+                    </li>
+                    <li class="message">
+                        <div class="message-title">
+                            <div class="message-from">Jone Smitt to me</div>
+                            <div class="message-actions"><i class="fas fa-star"></i></div>
+                        </div>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+                        et dolore magna
+                        aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat.
+                        <p class="date">11:37:00 10/08/2020</p>
+                    </li>
+                    <li class="my-message">
+                        <div class="message-title">
+                            <div class="message-from">Username</div>
+                            <div class="message-actions my-actions">
+                                <a href="" title="Edit message"><i class="fas fa-marker"></i></a>
+                                <a href="" title="Delete message"><i class="far fa-trash-alt"></i></a>
+                            </div>
+                        </div>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+                        et dolore magna
+                        aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat. Duis
+                        aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                        Excepteur sint
+                        occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                        <p class="date">11:37:00 10/08/2020</p>
+                    </li>
+                </ul>
+                
+            </div>
+            <div class="actions-bottom">
+                <div class="messageto">
+                    <a href="">Message to<i class="fas fa-angle-up"></i></a>
+                    <div class="users">
+                        <div class="user-item">
+                            <div class="userpic main-chat"></div>
+                            <a href="#">JS.TALSK();</a>
+                        </div>
+                        <div class="user-item">
+                            <div class="status active"></div>
+                            <div class="userpic"></div>
+                            <a href="#">User Name 1</a>
+                        </div>
+                        <div class="user-item">
+                            <div class="status active"></div>
+                            <div class="userpic"></div>
+                            <a href="#">User Name 2</a>
+                        </div>
+                        <div class="user-item">
+                            <div class="status away"></div>
+                            <div class="userpic"></div>
+                            <a href="#">User Name 3</a>
                         </div>
                     </div>
                 </div>
-                <section>
-                    <ul>
-                        <!--li>Message 1</!--li>
-                            <li>Message 2</li>-->
-                        <li>Message 3</li>
-                        <li>Message 4</li>
-                        <li class="message">
-                            <div class="message-title">
-                                <div class="message-from">Jone Smitt</div>
-                                <div class="message-actions">&nbsp;</div>
-                            </div>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                            et dolore magna
-                            aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-                            commodo consequat.
-                            <p class="date">11:37:00 10/08/2020</p>
-                        </li>
-                        <li class="message">
-                            <div class="message-title">
-                                <div class="message-from">Jone Smitt to me</div>
-                                <div class="message-actions"><i class="fas fa-star"></i></div>
-                            </div>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                            et dolore magna
-                            aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-                            commodo consequat.
-                            <p class="date">11:37:00 10/08/2020</p>
-                        </li>
-                        <li class="my-message">
-                            <div class="message-title">
-                                <div class="message-from">Username</div>
-                                <div class="message-actions my-actions">
-                                    <a href="" title="Edit message"><i class="fas fa-marker"></i></a>
-                                    <a href="" title="Delete message"><i class="far fa-trash-alt"></i></a>
-                                </div>
-                            </div>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                            et dolore magna
-                            aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-                            commodo consequat. Duis
-                            aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                            Excepteur sint
-                            occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                            <p class="date">11:37:00 10/08/2020</p>
-                        </li>
-                    </ul>
-                    <div class="actions-bottom">
-                        <div class="messageto">
-                            <a href="">Message to<i class="fas fa-angle-up"></i></a>
-                            <div class="users">
-                                <div class="user-item">
-                                    <div class="userpic main-chat"></div>
-                                    <a href="#">JS.TALSK();</a>
-                                </div>
-                                <div class="user-item">
-                                    <div class="status active">&nbsp;</div>
-                                    <div class="userpic"></div>
-                                    <a href="#">User Name 1</a>
-                                </div>
-                                <div class="user-item">
-                                    <div class="status active">&nbsp;</div>
-                                    <div class="userpic"></div>
-                                    <a href="#">User Name 2</a>
-                                </div>
-                                <div class="user-item">
-                                    <div class="status away">&nbsp;</div>
-                                    <div class="userpic"></div>
-                                    <a href="#">User Name 3</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="typing">
-                            Michael is typing...
-                        </div>
-                    </div>
-                    <form action="" class="typing-form">
-                        <textarea name="" id="" placeholder="Type a message"></textarea>
-                        <button type="submit" title="Send message"><i class="fas fa-paper-plane">&nbsp;</i></button>
-                    </form>
-                </section>
+                <div class="typing">
+                    Michael is typing...
+                </div>
+                <form action="" class="typing-form">
+                    <textarea placeholder="Type a message"></textarea>
+                    <button type="submit" title="Send message"><i class="fas fa-paper-plane"></i></button>
+                </form>
             </div>
         </main>
-    </div>
-    <footer>
+    <footer class="footer">
         <div class="container">
             <div class="contacts">
                 <div><p>Yuliya Philippova</p>

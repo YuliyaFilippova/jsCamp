@@ -1,5 +1,4 @@
 :root {
-
   --header-height: 9rem;
   --footer-height: 6rem;
 
@@ -20,17 +19,21 @@
   --width240: 15rem;
 
   --userpic-d: 1.7rem;
-  --status-d: 0.7em;
-  
-  --height60: 60px; /* ~ 4 rem */
-  --height40: 40px; /* ~ 2.5 rem */
-  --height30: 30px; /* 1.8 rem*/ 
-  --height24: 24px; /* 2 rem */
-  --height20: 20px; /* 1.3 rem */
+  --status-d: 0.7rem;
+
+  --height60: 4rem; /* ~ 60px */
+  --height40: 2.5rem; /* ~ 40px */
+  --height30: 1.8rem; /* 30px*/
+  --height24: 2rem; /* 24px */
+  --height20: 1.3rem; /* 20px */
 
   --padding20: 1.3rem; /* 20 px */
   --padding10: 0.63rem; /* 10 px */
   --padding5: 0.31rem; /* 5px */
-  --padding2: 0.13rem; /* 2px */ 
+  --padding2: 0.13rem; /* 2px */
 
+  --scrollbar-size: 0.3rem;
+  --scrollbar-track-color: rgba(79, 142, 169, 0.1);
+  --scrollbar-thumb-color: rgba(79, 142, 169, 0.5);
+  --scrollbar-thumb-color-hover: rgba(79, 142, 169, 0.7)
 }
