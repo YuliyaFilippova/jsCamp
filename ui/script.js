@@ -193,7 +193,7 @@ const content = (function(){
         dateTo: (item, dateTo) => dateTo && item.createdAt.getTime() < Date.parse(dateTo)
     };
 
-    function getMs(skip = 0, top = 10, filterConfig = {}) {
+    function getMessages(skip = 0, top = 10, filterConfig = {}) {
         let result = messages.slice();
 
         Object.keys(filterConfig).forEach( (key) => {
@@ -209,7 +209,7 @@ const content = (function(){
         text: (msg) => msg.text && msg.text.length <=200, 
         isPersonal: (msg) => {
             if ((msg.isPersonal === false && !msg.to) || 
-                (msg.isPersonal && msg.to && msg.to === 'string')) {
+                (msg.isPersonal && msg.to && typeof(msg.to) === 'string')) {
                 return true;
             }
         }, 
@@ -219,7 +219,7 @@ const content = (function(){
         return Object.keys(validateObj).every(key => validateObj[key](msg));
     }
 
-    function addMs(msg) {
+    function addMessage(msg) {
         if (validateMs(msg)) {
             msg.id = `${+new Date()}`;
             msg.createdAt = new Date();
@@ -313,7 +313,7 @@ const content = (function(){
 
 
     return {
-        getMs, addMs, editMs, 
+        getMessages, addMessage, editMs, 
         getMessage, 
         editMessage, removeMessage, 
     }; 
