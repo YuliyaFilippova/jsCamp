@@ -118,7 +118,6 @@ ul {
   background-color: var(--scrollbar-thumb-color-hover);
 }
 
-
 /*--------------------- Load messages block -------------------------*/
 
 .load a,
@@ -359,7 +358,7 @@ textarea {
   font-size: 0.85rem;
 }
 
-.date {
+.message-date {
   text-align: right;
   font-size: 0.7rem;
   margin-top: var(--padding5);

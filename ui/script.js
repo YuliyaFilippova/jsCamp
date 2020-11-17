@@ -93,11 +93,11 @@ const messages = [
     createdAt: new Date('2020-10-13T23:00:00'),
     author: 'Vlad Ivanov',
     isPersonal: true,
-    to: 'Yuliya Philippova',
+    to: 'John Smitt',
   },
   {
     id: '12',
-    text: 'JavaScript supports much of the structured programming syntax from C.',
+    text: 'Lorem JavaScript supports much of the structured programming syntax from C.',
     createdAt: new Date('2020-10-14T23:00:00'),
     author: 'John Smitt',
     isPersonal: true,
@@ -179,10 +179,10 @@ const messages = [
 
 class Message {
   constructor({
-    id, text, author, isPersonal, to,
+    id, createdAt, text, author, isPersonal, to,
   }) {
     this._id = id || `${+new Date()}`;
-    this._createdAt = new Date();
+    this._createddAt = createdAt || new Date();
     this._author = author;
     this.text = text;
     this.isPersonal = isPersonal || false;
@@ -193,8 +193,8 @@ class Message {
     return this._id;
   }
 
-  get createdAt() {
-    return this._createdAt;
+  get createddAt() {
+    return this._createddAt;
   }
 
   get author() {
@@ -210,7 +210,7 @@ class Message {
   }
 
   get isPersonal() {
-    return this.isPersonal;
+    return this._isPersonal;
   }
 
   set isPersonal(isPersonal) {
@@ -242,14 +242,14 @@ class MessageList {
 
   getPage(skip = 0, top = 10, filterConfig = {}) {
     const filterObj = {
-      author: (item, author) => (author && item.author.toLowerCase().includes(author.toLowerCase())) || author === this._user,
+      author: (item, author) => author && item.author.toLowerCase().includes(author.toLowerCase()),
       text: (item, text) => text && item.text.toLowerCase().includes(text.toLowerCase()),
-      dateFrom: (item, dateFrom) => dateFrom && item.createdAt.getTime() > Date.parse(dateFrom),
-      dateTo: (item, dateTo) => dateTo && item.createdAt.getTime() < Date.parse(dateTo),
-      to: (item) => (item.isPersonal && item.to === this._user) || !item.isPersonal,
+      dateFrom: (item, dateFrom) => dateFrom && item.createdAt > dateFrom,
+      dateTo: (item, dateTo) => dateTo && item.createdAt < dateTo,
     };
 
-    let result = this._collection.slice(); 
+    // возвращаем все сообщения для текущего юзера
+    let result = this._collection.filter(item => !item.isPersonal || item.to === this._user ||  item.author === this._user); 
 
     Object.keys(filterConfig).forEach((key) => {
       result = result.filter((item) => filterObj[key](item, filterConfig[key]));
@@ -275,7 +275,8 @@ class MessageList {
   add(msg) {
     if (MessageList.validate(msg)) {
       const newMessage = new Message({
-        id: msg.id, 
+        id: msg.id,
+        createdAt: msg.createdAt || new Date(),
         text: msg.text, 
         author: msg.author || this._user, 
         isPersonal: msg.isPersonal, 
@@ -334,4 +335,4 @@ class MessageList {
 
 const myList = new MessageList(messages);
 
-console.log(myList);
+//console.log(myList)
