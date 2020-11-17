@@ -19,14 +19,14 @@
                     <a href="#" title="js.talks();"><img src="icons/logo.png" alt="js.talks();"></a>
                 </div>
                 <div class="logins">
-                    <a href="" title="Username">Username</a>|
+                    <a href="" title="Username" id="username">Username</a>|
                     <a href="" title="Log Out">Log Out</a>
                 </div>
                 <div class="user-mobile">
                     <a href="" title="Username"><i class="fas fa-user"></i></a>
                     <div class="login-mobile">
                         <div class="user-item">
-                            <a href="#"><strong>Username</strong></a>
+                            <a href="#" id="username-mobile"><strong>Username</strong></a>
                         </div>
                         <div class="user-item">
                             <a href="" title="Log Out">Log Out</a>
@@ -56,7 +56,7 @@
                 </div>
             </div>
             <div class="content">
-                <ul>
+                <ul id='message-list'>
                     <li class="message">
                         <div class="message-title">
                             <div class="message-from">Jone Smitt</div>
@@ -66,19 +66,20 @@
                         et dolore magna
                         aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
                         commodo consequat.
-                        <p class="date">11:37:00 10/08/2020</p>
+                        <p class="message-date">11:37:00 10/08/2020</p>
                     </li>
-                    <li class="message">
-                        <div class="message-title">
-                            <div class="message-from">Jone Smitt</div>
-                            <div class="message-actions"></div>
-                        </div>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                        et dolore magna
-                        aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-                        commodo consequat.
-                        <p class="date">11:37:00 10/08/2020</p>
-                    </li>
+
+                    <template id="msg-template">
+                        <li class="message">
+                            <div class="message-title">
+                                <div class="message-from"></div>
+                                <div class="message-actions"></div>
+                            </div>
+                            <div class="message-text"></div>
+                            <div class="message-date"></div>
+                        </li>
+                    </template>
+                    
                     <li class="message">
                         <div class="message-title">
                             <div class="message-from">Jone Smitt</div>
