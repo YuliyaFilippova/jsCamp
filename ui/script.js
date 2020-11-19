@@ -176,13 +176,12 @@ const messages = [
     to: '',
   },
 ];
-
 class Message {
   constructor({
     id, createdAt, text, author, isPersonal, to,
   }) {
     this._id = id || `${+new Date()}`;
-    this._createddAt = createdAt || new Date();
+    this._createdAt = createdAt || new Date();
     this._author = author;
     this.text = text;
     this.isPersonal = isPersonal || false;
@@ -193,8 +192,8 @@ class Message {
     return this._id;
   }
 
-  get createddAt() {
-    return this._createddAt;
+  get createdAt() {
+    return this._createdAt;
   }
 
   get author() {
@@ -227,13 +226,16 @@ class Message {
 }
 class MessageList {
   constructor(messages) {
-    this._collection = [];
+    this._collection = messages;
     this._user = 'Yuliya Philippova';
-    messages.forEach((item) => this.add(item));
   }
 
   get user() {
     return this._user;
+  }
+
+  set user(currentUser) {
+    this._user = currentUser;
   }
 
   get(id) {
@@ -244,18 +246,21 @@ class MessageList {
     const filterObj = {
       author: (item, author) => author && item.author.toLowerCase().includes(author.toLowerCase()),
       text: (item, text) => text && item.text.toLowerCase().includes(text.toLowerCase()),
-      dateFrom: (item, dateFrom) => dateFrom && item.createdAt > dateFrom,
-      dateTo: (item, dateTo) => dateTo && item.createdAt < dateTo,
+      dateFrom: (item, dateFrom) => dateFrom && new Date(item.createdAt) > new Date(dateFrom),
+      dateTo: (item, dateTo) => dateTo && new Date(item.createdAt) < new Date(dateTo),
     };
 
     // возвращаем все сообщения для текущего юзера
-    let result = this._collection.filter(item => !item.isPersonal || item.to === this._user ||  item.author === this._user); 
-
+    let result = this._collection.filter(item => !item.isPersonal 
+        || item.to === this._user 
+        ||  item.author === this._user); 
     Object.keys(filterConfig).forEach((key) => {
       result = result.filter((item) => filterObj[key](item, filterConfig[key]));
     });
+    
     result = result.sort((a, b) => a.createdAt - b.createdAt);
-    return result.slice(skip, skip + top);
+    console.log(result);
+    return result.slice(skip, skip + top); 
   }
 
   static validate(msg) {
@@ -283,6 +288,7 @@ class MessageList {
         to: msg.to,
       });
       this._collection.push(newMessage);
+      console.log(`Messages after add - ${this._collection.length} `);
       console.log(newMessage);
       return true;
     }
@@ -308,6 +314,7 @@ class MessageList {
       msg.to = '';
     }
     Object.assign(temp, msg);
+    this._collection.splice(this._collection.findIndex((item) => item.id === id), 1, temp);
     console.log(temp);
     console.log('Edit was successful');
     return true;
@@ -318,8 +325,9 @@ class MessageList {
       console.log('Id is not existed');
       return false;
     }
+    console.log(this._collection);
     this._collection.splice(this._collection.findIndex((item) => item.id === id), 1);
-    console.log(`Messages after removing - ${this._collection.length} `);
+    console.log(this._collection);
     return true;
   }
 
@@ -332,7 +340,161 @@ class MessageList {
     return this._collection;
   }
 }
+class UserList {
+  constructor(users, activeUsers) {
+    this._users = users;
+    this._activeUsers = activeUsers || false;
+  }
 
-const myList = new MessageList(messages);
+  get users() {
+    return this._users;
+  }
 
-//console.log(myList)
+  get activeUsers() {
+    return this._activeUsers;
+  }
+}
+class HeaderView {
+  constructor(currentUser) {
+    this.currentUser = currentUser;
+    this.user = document.getElementById('username');
+  }
+
+  display() {
+    this.user.textContent = this.currentUser;
+  }
+}
+class MessageView {
+  constructor(messages) {
+    this.messages = messages;
+    this.list = document.getElementById('message-list');
+    this.msgTpl = document.getElementById('msg-template');
+  }
+
+  display(currentUser) {
+    this.list.innerHTML = "";
+    const fragment = new DocumentFragment();
+    this.messages.forEach(item => {
+      const elem = this.msgTpl.content.cloneNode(true);
+      elem.querySelector('.message-text').textContent = item.text;
+      if (item.isPersonal === true && item.to === currentUser) {
+        elem.querySelector('.message-from').textContent = `${item.author} to me`; 
+        elem.querySelector('.message-actions').innerHTML = `
+          <i class="fas fa-star"></i>`; 
+      } else {
+        elem.querySelector('.message-from').textContent = item.author;
+      }
+
+      if (item.author === currentUser) {
+        elem.querySelector('.message').className = "my-message"; 
+        elem.querySelector('.message-actions').innerHTML = `
+          <a href="" title="Edit message"><i class="fas fa-marker"></i></a>
+          <a href="" title="Delete message"><i class="far fa-trash-alt"></i></a>
+        `;
+        elem.querySelector('.message-actions').classList.add('my-actions');
+      }
+      if (item.author === currentUser && item.isPersonal) {
+        elem.querySelector('.message-from').textContent = `${item.author} to ${item.to}`
+      }
+      elem.querySelector('.message-date').textContent = `${item.createdAt.toLocaleDateString()}   ${item.createdAt.toLocaleTimeString()}`;
+      fragment.appendChild(elem);
+    });
+
+    this.list.appendChild(fragment);
+  }
+}
+class ActiveUsersView extends UserList {
+  constructor(users, activeUsers) {
+    super(users, activeUsers);
+    this.userTpl = document.getElementById('user-template');
+    this.usersTo = document.getElementById('users');
+  }
+
+  displayActive() {
+    const fragment = new DocumentFragment();
+    this.activeUsers.forEach(item => {
+      const elem = this.userTpl.content.cloneNode(true);
+      elem.querySelector('.user-item a').textContent = item;
+      elem.querySelector('.status').className = "status active";
+      fragment.appendChild(elem);
+    });
+    this.usersTo.appendChild(fragment);
+  }
+
+  displayInactive() {
+    const inactiveUsers = this.users.filter(item => !this.activeUsers.includes(item));
+    const fragment = new DocumentFragment();
+    inactiveUsers.forEach(item => {
+      const elem = this.userTpl.content.cloneNode(true);
+      elem.querySelector('.user-item a').textContent = item;
+      elem.querySelector('.status').className = "status away";
+      fragment.appendChild(elem);
+    });
+    this.usersTo.appendChild(fragment);
+  }
+}
+class FilterView extends UserList {
+  constructor(users, activeUsers) {
+    super(users, activeUsers);
+    this.findUser = document.getElementById('find-user');
+  }
+
+  display() {
+    let index = 1; 
+    this.users.forEach(item => {
+      this.findUser.innerHTML += `<option value="${++index}">${item}</option>`;
+    });
+    console.log(this.findUser);
+  }
+}
+
+
+const currentUser = 'Yuliya Philippova';
+const users = ['Maroon Horse', 'Pink Raccoon', 'Anna Kardash', 'Nata Beresneva', 'Lavender Ferret', 'Violet Cheetah', 'Blue Lama', 'Beige Unicorn ']; 
+const activeUsers = ['Nata Beresneva', 'Lavender Ferret', 'Violet Cheetah', 'Blue Lama', 'Beige Unicorn']; 
+
+const model = new MessageList(messages);
+const filterView = new FilterView(users);
+filterView.display();
+const activeUsersView = new ActiveUsersView(users, activeUsers); 
+const messageView = new MessageView(messages);
+messageView.display(currentUser);
+
+function setCurrentUser(user) {
+  const headerView = new HeaderView(user);
+  headerView.display();
+  model.user = user;
+}
+
+function addMessage(msg) {
+  if (model.add(msg)) {
+    messageView.display(currentUser);
+  }
+}
+
+function editMessage(id, msg) {
+  if (model.edit(id, msg)) {
+    messageView.display(currentUser);
+  }
+}
+
+function removeMessage(id) {
+  if (model.remove(id)) {
+    messageView.display(currentUser);
+  }
+}
+
+function showMessages(skip = 0, top = 10, filterConfig = {}) {
+  let result = model.getPage(skip, top, filterConfig); 
+  console.log(result);
+  const filteredMessages = new MessageView(result); 
+  filteredMessages.display(currentUser);
+}
+
+function showActiveUsers() {
+  activeUsersView.displayActive();
+  activeUsersView.displayInactive();
+}
+
+setCurrentUser(currentUser);
+showActiveUsers()
