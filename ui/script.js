@@ -261,8 +261,7 @@ class MessageList {
     Object.keys(filterConfig).forEach((key) => {
       result = result.filter((item) => filterObj[key](item, filterConfig[key]));
     });
-    result = result.sort((a, b) => b.createdAt - b.createdAt);
-    //console.log(result);
+    result = result.sort((a, b) => a.createdAt - b.createdAt);
     return result.slice(skip, skip + top); 
   }
 
@@ -290,7 +289,6 @@ class MessageList {
         to: msg.to,
       });
       this._collection.push(newMessage);
-      console.log(`Messages after add - ${this._collection.length} `);
       console.log(this._collection);
       return true;
     }
@@ -331,15 +329,6 @@ class MessageList {
     this._collection.splice(this._collection.findIndex((item) => item.id === id), 1);
     console.log(this._collection);
     return true;
-  }
-
-  addAll(messages = []) {
-    return messages.filter((item) => !this.add(item));
-  }
-
-  clear() {
-    this._collection = [];
-    return this._collection;
   }
 }
 class UserList {
@@ -449,7 +438,6 @@ class FilterView extends UserList {
     console.log(this.findUser);
   }
 }
-
 
 const currentUser = 'Yuliya Philippova';
 const users = ['Maroon Horse', 'Pink Raccoon', 'Anna Kardash', 'Nata Beresneva', 'Lavender Ferret', 'Violet Cheetah', 'Blue Lama', 'Beige Unicorn ']; 
