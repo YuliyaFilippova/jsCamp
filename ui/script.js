@@ -230,6 +230,10 @@ class MessageList {
     this._user = 'Yuliya Philippova';
   }
 
+  get collection() {
+    return this._collection;
+  }
+
   get user() {
     return this._user;
   }
@@ -257,9 +261,8 @@ class MessageList {
     Object.keys(filterConfig).forEach((key) => {
       result = result.filter((item) => filterObj[key](item, filterConfig[key]));
     });
-    
-    result = result.sort((a, b) => a.createdAt - b.createdAt);
-    console.log(result);
+    result = result.sort((a, b) => b.createdAt - b.createdAt);
+    //console.log(result);
     return result.slice(skip, skip + top); 
   }
 
@@ -271,9 +274,8 @@ class MessageList {
                     || (msg.isPersonal && msg.to && typeof (msg.to) === 'string')) {
           return true;
         }
-      },
+      }
     };
-
     return Object.keys(validateObj).every((key) => validateObj[key](msg));
   }
 
@@ -289,10 +291,10 @@ class MessageList {
       });
       this._collection.push(newMessage);
       console.log(`Messages after add - ${this._collection.length} `);
-      console.log(newMessage);
+      console.log(this._collection);
       return true;
     }
-    console.log('Incorrect paraeters');
+    console.log('Incorrect parameters');
     return false;
   }
 
