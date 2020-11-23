@@ -378,6 +378,15 @@ textarea {
   opacity: 0;
 }
 
+.disable {
+  pointer-events: none;
+  opacity: 0.2;
+}
+
+textarea {
+  background-color: white;
+}
+
 /*--------------------- footer -------------------------*/
 
 .footer {

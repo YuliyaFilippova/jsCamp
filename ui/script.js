@@ -224,7 +224,7 @@ class Message {
     this._to = to;
   }
 }
-class MessageList {
+class Model {
   constructor(messages) {
     this._collection = messages;
     this._user = 'Yuliya Philippova';
@@ -261,8 +261,7 @@ class MessageList {
     Object.keys(filterConfig).forEach((key) => {
       result = result.filter((item) => filterObj[key](item, filterConfig[key]));
     });
-    result = result.sort((a, b) => b.createdAt - b.createdAt);
-    //console.log(result);
+    result = result.sort((a, b) => b.createdAt - a.createdAt);
     return result.slice(skip, skip + top); 
   }
 
@@ -280,7 +279,7 @@ class MessageList {
   }
 
   add(msg) {
-    if (MessageList.validate(msg)) {
+    if (Model.validate(msg)) {
       const newMessage = new Message({
         id: msg.id,
         createdAt: msg.createdAt || new Date(),
@@ -290,7 +289,6 @@ class MessageList {
         to: msg.to,
       });
       this._collection.push(newMessage);
-      console.log(`Messages after add - ${this._collection.length} `);
       console.log(this._collection);
       return true;
     }
@@ -332,15 +330,6 @@ class MessageList {
     console.log(this._collection);
     return true;
   }
-
-  addAll(messages = []) {
-    return messages.filter((item) => !this.add(item));
-  }
-
-  clear() {
-    this._collection = [];
-    return this._collection;
-  }
 }
 class UserList {
   constructor(users, activeUsers) {
@@ -357,27 +346,43 @@ class UserList {
   }
 }
 class HeaderView {
-  constructor(currentUser) {
-    this.currentUser = currentUser;
-    this.user = document.getElementById('username');
+  constructor(containerID) {
+    this.user = document.getElementById(containerID);
   }
 
-  display() {
-    this.user.textContent = this.currentUser;
+  display(username = 'Guest') {
+    this.user.innerHTML = `<a href="" title="Username" id="username">${username}</a><span>|</span>
+                    <a href="" title="Log Out" id="login-logout">Log Out</a>`; 
+
+    document.querySelector('.typing-form').classList.remove('disable');
+    document.querySelector('.typing-form button').setAttribute('disabled', false);
+    document.querySelector('textarea').setAttribute('disabled', false);
+    document.querySelector('.messageto').classList.remove('disable');
+    document.querySelector('#find-user').setAttribute('disabled', false);
+
+    if (username === 'Guest') {
+      this.user.innerHTML = `<a href="" title="Username" id="username">${username}</a><span>|</span>
+                    <a href="" title="Sign In" id="signin">Sign In</a><span>|</span>
+                    <a href="" title="Log Out" id="login-logout">Log In</a>`;
+      document.querySelector('.typing-form').classList.add('disable');
+      document.querySelector('.typing-form button').setAttribute('disabled', true);
+      document.querySelector('textarea').setAttribute('disabled', true);
+      document.querySelector('.messageto').classList.add('disable');
+      document.querySelector('#find-user').setAttribute('disabled', true);
+    }
   }
 }
 class MessageView {
-  constructor(messages) {
-    this.messages = messages;
-    this.list = document.getElementById('message-list');
-    this.msgTpl = document.getElementById('msg-template');
+  constructor(containerID) {
+    this.list = document.getElementById(containerID);
   }
 
-  display(currentUser) {
+  display(messages, currentUser) {
     this.list.innerHTML = "";
+    const msgTpl = document.getElementById('msg-template');
     const fragment = new DocumentFragment();
-    this.messages.forEach(item => {
-      const elem = this.msgTpl.content.cloneNode(true);
+    messages.forEach(item => {
+      const elem = msgTpl.content.cloneNode(true);
       elem.querySelector('.message-text').textContent = item.text;
       if (item.isPersonal === true && item.to === currentUser) {
         elem.querySelector('.message-from').textContent = `${item.author} to me`; 
@@ -388,7 +393,7 @@ class MessageView {
       }
 
       if (item.author === currentUser) {
-        elem.querySelector('.message').className = "my-message"; 
+        elem.querySelector('.message').className = 'my-message'; 
         elem.querySelector('.message-actions').innerHTML = `
           <a href="" title="Edit message"><i class="fas fa-marker"></i></a>
           <a href="" title="Delete message"><i class="far fa-trash-alt"></i></a>
@@ -405,29 +410,25 @@ class MessageView {
     this.list.appendChild(fragment);
   }
 }
-class ActiveUsersView extends UserList {
-  constructor(users, activeUsers) {
-    super(users, activeUsers);
-    this.userTpl = document.getElementById('user-template');
-    this.usersTo = document.getElementById('users');
+class ActiveUsersView {
+  constructor(containerID) {
+    this.usersTo = document.getElementById(containerID);
   }
 
-  displayActive() {
+  display(users, activeUsers) {
     const fragment = new DocumentFragment();
-    this.activeUsers.forEach(item => {
-      const elem = this.userTpl.content.cloneNode(true);
+    const userTpl = document.getElementById('user-template');
+    activeUsers.forEach(item => {
+      const elem = userTpl.content.cloneNode(true);
       elem.querySelector('.user-item a').textContent = item;
       elem.querySelector('.status').className = "status active";
       fragment.appendChild(elem);
     });
     this.usersTo.appendChild(fragment);
-  }
 
-  displayInactive() {
-    const inactiveUsers = this.users.filter(item => !this.activeUsers.includes(item));
-    const fragment = new DocumentFragment();
+    const inactiveUsers = users.filter(item => !activeUsers.includes(item));
     inactiveUsers.forEach(item => {
-      const elem = this.userTpl.content.cloneNode(true);
+      const elem = userTpl.content.cloneNode(true);
       elem.querySelector('.user-item a').textContent = item;
       elem.querySelector('.status').className = "status away";
       fragment.appendChild(elem);
@@ -435,68 +436,66 @@ class ActiveUsersView extends UserList {
     this.usersTo.appendChild(fragment);
   }
 }
-class FilterView extends UserList {
-  constructor(users, activeUsers) {
-    super(users, activeUsers);
-    this.findUser = document.getElementById('find-user');
+class FilterView {
+  constructor(containerID) {
+    this.findUser = document.getElementById(containerID);
   }
 
-  display() {
+  display(users) {
     let index = 1; 
-    this.users.forEach(item => {
+    users.forEach(item => {
       this.findUser.innerHTML += `<option value="${++index}">${item}</option>`;
     });
     console.log(this.findUser);
   }
 }
 
-
 const currentUser = 'Yuliya Philippova';
 const users = ['Maroon Horse', 'Pink Raccoon', 'Anna Kardash', 'Nata Beresneva', 'Lavender Ferret', 'Violet Cheetah', 'Blue Lama', 'Beige Unicorn ']; 
 const activeUsers = ['Nata Beresneva', 'Lavender Ferret', 'Violet Cheetah', 'Blue Lama', 'Beige Unicorn']; 
 
-const model = new MessageList(messages);
-const filterView = new FilterView(users);
-filterView.display();
-const activeUsersView = new ActiveUsersView(users, activeUsers); 
-const messageView = new MessageView(messages);
-messageView.display(currentUser);
+const model = new Model(messages);
+const userList = new UserList(users, activeUsers);
+const headerView = new HeaderView('login');
+const messageView = new MessageView('message-list');
+const activeUsersView = new ActiveUsersView('users');
+const filterView = new FilterView('find-user');
+filterView.display(users);
 
 function setCurrentUser(user) {
-  const headerView = new HeaderView(user);
-  headerView.display();
+  headerView.display(user);
   model.user = user;
+  messageView.display(model.getPage(), user);
 }
 
 function addMessage(msg) {
   if (model.add(msg)) {
-    messageView.display(currentUser);
+    messageView.display(model.getPage(), currentUser);
   }
 }
 
 function editMessage(id, msg) {
   if (model.edit(id, msg)) {
-    messageView.display(currentUser);
+    messageView.display(model.getPage(), currentUser);
   }
 }
 
 function removeMessage(id) {
   if (model.remove(id)) {
-    messageView.display(currentUser);
+    messageView.display(model.getPage(), currentUser);
   }
 }
 
 function showMessages(skip = 0, top = 10, filterConfig = {}) {
   let result = model.getPage(skip, top, filterConfig); 
   console.log(result);
-  const filteredMessages = new MessageView(result); 
-  filteredMessages.display(currentUser);
+  const filteredMessages = new MessageView('message-list'); 
+  filteredMessages.display(result, currentUser);
 }
 
 function showActiveUsers() {
-  activeUsersView.displayActive();
-  activeUsersView.displayInactive();
+  activeUsersView.display(userList.users, userList.activeUsers);
 }
 
 setCurrentUser(currentUser);
-showActiveUsers()
+showActiveUsers();
