@@ -11,6 +11,7 @@
   --links-color: rgba(79, 142, 169, 1);
   --search-color: rgba(25, 32, 95, 0.3);
   --mobile-border: rgba(79, 142, 169, 0.1);
+  --disable-color: rgba(79, 142, 169, 0.25);
 
   --width100: 100%;
   --width80: 80%;
@@ -35,5 +36,5 @@
   --scrollbar-size: 0.3rem;
   --scrollbar-track-color: rgba(79, 142, 169, 0.1);
   --scrollbar-thumb-color: rgba(79, 142, 169, 0.5);
-  --scrollbar-thumb-color-hover: rgba(79, 142, 169, 0.7)
+  --scrollbar-thumb-color-hover: rgba(79, 142, 169, 0.7);
 }
