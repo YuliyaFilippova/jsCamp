@@ -175,6 +175,30 @@ const messages = [
     isPersonal: false,
     to: '',
   },
+  {
+    id: '22',
+    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    createdAt: new Date('2020-10-21T23:00:00'),
+    author: 'Lesley Knife',
+    isPersonal: false,
+    to: '',
+  },
+  {
+    id: '23',
+    text: 'In JavaScript, an object is an associative array, augmented with a prototype (see below); each string key provides the name ',
+    createdAt: new Date('2020-10-22T23:00:00'),
+    author: 'Yuliya Philippova',
+    isPersonal: false,
+    to: '',
+  },
+  {
+    id: '24',
+    text: 'Functions double as object constructors, along with their typical role.',
+    createdAt: new Date('2020-10-23T23:00:00'),
+    author: 'Irvin Wood',
+    isPersonal: false,
+    to: '',
+  },
 ];
 class Message {
   constructor({
@@ -254,15 +278,18 @@ class Model {
       dateTo: (item, dateTo) => dateTo && new Date(item.createdAt) < new Date(dateTo),
     };
 
+    console.log('collection:', this._collection);
     // возвращаем все сообщения для текущего юзера
-    let result = this._collection.filter(item => !item.isPersonal 
-        || item.to === this._user 
-        ||  item.author === this._user); 
+    let result = this._collection.filter((item) => !item.isPersonal
+        || item.to === this._user
+        || item.author === this._user);
     Object.keys(filterConfig).forEach((key) => {
       result = result.filter((item) => filterObj[key](item, filterConfig[key]));
     });
     result = result.sort((a, b) => b.createdAt - a.createdAt);
-    return result.slice(skip, skip + top); 
+    result = result.slice(skip, skip + top);
+    console.log('result:', skip, top, result);
+    return result;
   }
 
   static validate(msg) {
@@ -273,7 +300,7 @@ class Model {
                     || (msg.isPersonal && msg.to && typeof (msg.to) === 'string')) {
           return true;
         }
-      }
+      },
     };
     return Object.keys(validateObj).every((key) => validateObj[key](msg));
   }
@@ -283,9 +310,9 @@ class Model {
       const newMessage = new Message({
         id: msg.id,
         createdAt: msg.createdAt || new Date(),
-        text: msg.text, 
-        author: msg.author || this._user, 
-        isPersonal: msg.isPersonal, 
+        text: msg.text,
+        author: msg.author || this._user,
+        isPersonal: msg.isPersonal,
         to: msg.to,
       });
       this._collection.push(newMessage);
@@ -331,20 +358,6 @@ class Model {
     return true;
   }
 }
-class UserList {
-  constructor(users, activeUsers) {
-    this._users = users;
-    this._activeUsers = activeUsers || false;
-  }
-
-  get users() {
-    return this._users;
-  }
-
-  get activeUsers() {
-    return this._activeUsers;
-  }
-}
 class HeaderView {
   constructor(containerID) {
     this.user = document.getElementById(containerID);
@@ -352,18 +365,18 @@ class HeaderView {
 
   display(username = 'Guest') {
     this.user.innerHTML = `<a href="" title="Username" id="username">${username}</a><span>|</span>
-                    <a href="" title="Log Out" id="login-logout">Log Out</a>`; 
+                    <a href="" title="Log Out" id="login-logout" onclick="ctrl.setCurrentUser()">Log Out</a>`;
 
     document.querySelector('.typing-form').classList.remove('disable');
-    document.querySelector('.typing-form button').setAttribute('disabled', false);
-    document.querySelector('textarea').setAttribute('disabled', false);
+    document.querySelector('.typing-form button').removeAttribute('disabled', true);
+    document.querySelector('textarea').removeAttribute('disabled', true);
     document.querySelector('.messageto').classList.remove('disable');
-    document.querySelector('#find-user').setAttribute('disabled', false);
+    document.querySelector('#find-user').removeAttribute('disabled', true);
 
     if (username === 'Guest') {
       this.user.innerHTML = `<a href="" title="Username" id="username">${username}</a><span>|</span>
-                    <a href="" title="Sign In" id="signin">Sign In</a><span>|</span>
-                    <a href="" title="Log Out" id="login-logout">Log In</a>`;
+                    <a title="Sign In" id="signup" onclick="ctrl.signupDisplay()">Sign Up</a><span>|</span>
+                    <a title="Log Out" id="login-logout" onclick="ctrl.loginDisplay()">Log In</a>`;
       document.querySelector('.typing-form').classList.add('disable');
       document.querySelector('.typing-form button').setAttribute('disabled', true);
       document.querySelector('textarea').setAttribute('disabled', true);
@@ -378,22 +391,22 @@ class MessageView {
   }
 
   display(messages, currentUser) {
-    this.list.innerHTML = "";
+    this.list.innerHTML = '';
     const msgTpl = document.getElementById('msg-template');
     const fragment = new DocumentFragment();
-    messages.forEach(item => {
+    messages.forEach((item) => {
       const elem = msgTpl.content.cloneNode(true);
       elem.querySelector('.message-text').textContent = item.text;
       if (item.isPersonal === true && item.to === currentUser) {
-        elem.querySelector('.message-from').textContent = `${item.author} to me`; 
+        elem.querySelector('.message-from').textContent = `${item.author} to me`;
         elem.querySelector('.message-actions').innerHTML = `
-          <i class="fas fa-star"></i>`; 
+          <i class="fas fa-star"></i>`;
       } else {
         elem.querySelector('.message-from').textContent = item.author;
       }
 
       if (item.author === currentUser) {
-        elem.querySelector('.message').className = 'my-message'; 
+        elem.querySelector('.message').className = 'my-message';
         elem.querySelector('.message-actions').innerHTML = `
           <a href="" title="Edit message"><i class="fas fa-marker"></i></a>
           <a href="" title="Delete message"><i class="far fa-trash-alt"></i></a>
@@ -401,9 +414,9 @@ class MessageView {
         elem.querySelector('.message-actions').classList.add('my-actions');
       }
       if (item.author === currentUser && item.isPersonal) {
-        elem.querySelector('.message-from').textContent = `${item.author} to ${item.to}`
+        elem.querySelector('.message-from').textContent = `${item.author} to ${item.to}`;
       }
-      elem.querySelector('.message-date').textContent = `${item.createdAt.toLocaleDateString()}   ${item.createdAt.toLocaleTimeString()}`;
+      elem.querySelector('.message-date').textContent = `${item.createdAt}`;
       fragment.appendChild(elem);
     });
 
@@ -418,84 +431,238 @@ class ActiveUsersView {
   display(users, activeUsers) {
     const fragment = new DocumentFragment();
     const userTpl = document.getElementById('user-template');
-    activeUsers.forEach(item => {
+    activeUsers.forEach((item) => {
       const elem = userTpl.content.cloneNode(true);
-      elem.querySelector('.user-item a').textContent = item;
-      elem.querySelector('.status').className = "status active";
+      elem.querySelector('.user-item p').textContent = item.user;
+      elem.querySelector('.status').className = 'status active';
       fragment.appendChild(elem);
     });
     this.usersTo.appendChild(fragment);
 
-    const inactiveUsers = users.filter(item => !activeUsers.includes(item));
-    inactiveUsers.forEach(item => {
+    const inactiveUsers = users.filter((item) => !activeUsers.includes(item.user));
+    inactiveUsers.forEach((item) => {
       const elem = userTpl.content.cloneNode(true);
-      elem.querySelector('.user-item a').textContent = item;
-      elem.querySelector('.status').className = "status away";
+      elem.querySelector('.user-item p').textContent = item.user;
+      elem.querySelector('.status').className = 'status away';
       fragment.appendChild(elem);
     });
-    this.usersTo.appendChild(fragment);
+    // this.usersTo.appendChild(fragment);
   }
 }
-class FilterView {
-  constructor(containerID) {
-    this.findUser = document.getElementById(containerID);
+class UserList {
+  constructor(users, activeUsers) {
+    this._users = users;
+    this._activeUsers = activeUsers || false;
   }
 
-  display(users) {
-    let index = 1; 
-    users.forEach(item => {
-      this.findUser.innerHTML += `<option value="${++index}">${item}</option>`;
-    });
-    console.log(this.findUser);
+  get users() {
+    return this._users;
+  }
+
+  get activeUsers() {
+    return this._activeUsers;
   }
 }
 
 const currentUser = 'Yuliya Philippova';
-const users = ['Maroon Horse', 'Pink Raccoon', 'Anna Kardash', 'Nata Beresneva', 'Lavender Ferret', 'Violet Cheetah', 'Blue Lama', 'Beige Unicorn ']; 
-const activeUsers = ['Nata Beresneva', 'Lavender Ferret', 'Violet Cheetah', 'Blue Lama', 'Beige Unicorn']; 
+const users = [{ user: 'Yuliya Philippova', pwd: '12345' }, { user: 'Anna Lebedeva', pwd: '123' }, { user: 'John Smitt', pwd: '123' }];
+class ChatController {
+  constructor() {
+    this.messages = [];
+    this.users = [];
+    this.model = new Model(this.restore());
+    this.headerView = new HeaderView('login');
+    this.messageView = new MessageView('message-list');
+    this.index = 1;
+    this.signupBlock = document.querySelector('.signup');
+    this.loginBlock = document.querySelector('.loginForm');
+    this.activeUsers = new ActiveUsersView('users');
+  }
 
-const model = new Model(messages);
-const userList = new UserList(users, activeUsers);
-const headerView = new HeaderView('login');
-const messageView = new MessageView('message-list');
-const activeUsersView = new ActiveUsersView('users');
-const filterView = new FilterView('find-user');
-filterView.display(users);
+  setCurrentUser(currentUser) {
+    this.headerView.display(currentUser);
+    this.model.user = currentUser;
+    this.messageView.display(this.model.getPage(), currentUser);
+    console.log('model.user: ', this.model.user);
+  }
 
-function setCurrentUser(user) {
-  headerView.display(user);
-  model.user = user;
-  messageView.display(model.getPage(), user);
-}
+  moreMessages() {
+    const more = document.getElementById('more');
+    more.addEventListener('click', () => {
+      ++this.index;
+      console.log('more click:', this.index);
+      this.messageView.display(this.model.getPage(0, 10 * this.index), this.model.user);
+    });
+  }
 
-function addMessage(msg) {
-  if (model.add(msg)) {
-    messageView.display(model.getPage(), currentUser);
+  saveToLocal() {
+    localStorage.setItem('messages', JSON.stringify(this.messages));
+    localStorage.setItem('users', JSON.stringify(this.users));
+    localStorage.setItem('currentUser', JSON.stringify(this.model.user));
+  }
+
+  restore() {
+    try {
+      this.messages = JSON.parse(localStorage.getItem('messages'));
+      this.users = JSON.parse(localStorage.getItem('users'));
+    } catch (e) {
+      this.saveToLocal();
+      this.messages = messages;
+      this.users = users;
+    }
+    return this.messages;
+  }
+
+  defaultPage() {
+    this.signupBlock.style.display = 'none';
+    this.loginBlock.style.display = 'none';
+    document.querySelector('.actions-top').style.display = 'flex';
+    document.querySelector('.content').style.display = 'flex';
+    document.querySelector('.actions-bottom').style.display = 'flex';
+  }
+
+  homeBtn() {
+    document.querySelector('.homeBtn')
+      .addEventListener('click', () => {
+        ctrl.setCurrentUser();
+        this.defaultPage();
+      });
+  }
+
+  signupDisplay() {
+    this.signupBlock.style.display = 'flex';
+    this.loginBlock.style.display = 'none';
+    document.querySelector('.actions-top').style.display = 'none';
+    document.querySelector('.content').style.display = 'none';
+    document.querySelector('.actions-bottom').style.display = 'none';
+    document.getElementById('login-name').style.borderColor = 'var(--login-color)';
+    document.getElementById('pwd').style.borderColor = 'var(--login-color)';
+    document.getElementById('confirm-pwd').style.borderColor = 'var(--login-color)';
+    this.homeBtn();
+  }
+
+  signupAction() {
+    const login = document.getElementById('login-name');
+    const pwd = document.getElementById('pwd');
+    const confirmPwd = document.getElementById('confirm-pwd');
+    const submitBtn = document.getElementById('signupAction');
+
+    submitBtn.addEventListener('click', () => {
+      console.log('login value - ', login.value);
+      console.log('pwd value - ', pwd.value);
+      console.log('confrm-pwd value - ', confirmPwd.value);
+      console.log(this.users);
+      if (!login.value || login.value === ' ') {
+        this.signupDisplay();
+        login.style.borderColor = 'var(--error-color)';
+      }
+      if (!pwd.value || !confirmPwd.value || pwd.value !== confirmPwd.value) {
+        pwd.style.borderColor = 'var(--error-color)';
+        confirmPwd.style.borderColor = 'var(--error-color)';
+      } else if (this.users.filter((item) => item.user === login.value).length === 1) {
+        this.loginDisplay();
+      } else {
+        login.style.borderColor = 'var(--login-color)';
+        pwd.style.borderColor = 'var(--login-color)';
+        confirmPwd.style.borderColor = 'var(--login-color)';
+        const pair = {};
+        pair.user = login.value;
+        pair.pwd = pwd.value;
+        console.log(pair);
+        this.users.push(pair);
+        this.defaultPage();
+        this.setCurrentUser(login.value);
+        localStorage.setItem('currentUser', JSON.stringify(login.value));
+        localStorage.setItem('users', JSON.stringify(this.users));
+      }
+      console.log(this.users);
+    });
+  }
+
+  loginDisplay() {
+    this.loginBlock.style.display = 'flex';
+    this.signupBlock.style.display = 'none';
+    document.querySelector('.actions-top').style.display = 'none';
+    document.querySelector('.content').style.display = 'none';
+    document.querySelector('.actions-bottom').style.display = 'none';
+    document.querySelector('#homeBtn')
+      .addEventListener('click', () => {
+        ctrl.setCurrentUser();
+        this.defaultPage();
+      });
+  }
+
+  loginAction() {
+    const login2 = document.getElementById('login-name2');
+    const pwd2 = document.getElementById('pwd2');
+    const loginBtn = document.getElementById('loginAction');
+
+    loginBtn.addEventListener('click', () => {
+      console.log('login2 value - ', login2.value);
+      console.log('pwd2 value - ', pwd2.value);
+
+      if (this.users.filter((item) => item.user === login2.value) && this.users.filter((item) => item.pwd === pwd2.value)) {
+        console.log('match');
+        this.defaultPage();
+        this.setCurrentUser(login2.value);
+      } else if (this.users.filter((item) => item.user === login2.value).length !== 1) {
+        this.loginDisplay();
+        login.style.borderColor = 'var(--error-color)';
+      } else if (this.users.filter((item) => item.pwd === pwd2.value).length !== 1) {
+        this.loginDisplay();
+        pwd2.style.borderColor = 'var(--error-color)';
+      }
+      console.log(this.users);
+    });
+  }
+
+  displayUsers() {
+    this.activeUsers.display(this.users, this.users);
+  }
+
+  addMessage() {
+    const msg = {};
+    const messageText = document.querySelector('#message-text');
+    const messageSubmit = document.querySelector('#messageSubmit');
+
+    const usersList = document.querySelectorAll('.user-item p');
+    usersList.forEach((item) => console.log(item.textContent));
+
+    const usersNode = document.getElementById('users');
+    usersNode.addEventListener('click', (event) => {
+      document.getElementById('displayTo').innerHTML = event.target.textContent;
+      msg.to = event.target.textContent;
+    });
+
+    messageSubmit.addEventListener('click', () => {
+      msg.text = messageText.value;
+      if (msg.to) {
+        msg.isPersonal = true;
+      }
+      msg.isPersonal = false;
+      msg.to = '';
+      console.log('message Text = ', messageText.value);
+      console.log('Msg.to = ', msg.to);
+      console.log('Msg.ispersonal = ',  msg.isPersonal);
+      console.log('Msg.author = ', this.model.user);
+      console.log(msg);
+      if (this.model.add(msg)) {
+        this.messageView.display(this.model.getPage(), this.model.user);
+        console.log(msg);
+        messageText.value = '';
+        document.getElementById('displayTo').innerHTML = '';
+        localStorage.setItem('messages', JSON.stringify(this.messages));
+      }
+    });
   }
 }
 
-function editMessage(id, msg) {
-  if (model.edit(id, msg)) {
-    messageView.display(model.getPage(), currentUser);
-  }
-}
-
-function removeMessage(id) {
-  if (model.remove(id)) {
-    messageView.display(model.getPage(), currentUser);
-  }
-}
-
-function showMessages(skip = 0, top = 10, filterConfig = {}) {
-  let result = model.getPage(skip, top, filterConfig); 
-  console.log(result);
-  const filteredMessages = new MessageView('message-list'); 
-  filteredMessages.display(result, currentUser);
-}
-
-function showActiveUsers() {
-  activeUsersView.display(userList.users, userList.activeUsers);
-}
-
-setCurrentUser(currentUser);
-showActiveUsers();
+const ctrl = new ChatController();
+ctrl.saveToLocal();
+ctrl.restore();
+ctrl.setCurrentUser('Yuliya Philippova');
+ctrl.moreMessages();
+ctrl.signupAction();
+ctrl.loginAction();
+ctrl.displayUsers();
+ctrl.addMessage();
