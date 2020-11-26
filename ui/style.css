@@ -46,12 +46,17 @@ textarea:focus {
   outline: none;
 }
 
-a {
+a,
+.more,
+.filter-link {
   text-decoration: none;
   color: var(--main-font);
+  cursor: pointer;
 }
 
 a:hover,
+.more:hover,
+.filter-link:hover,
 .logins a:hover {
   color: var(--main-font-hover);
 }
@@ -122,7 +127,7 @@ ul {
 
 .load a,
 .filters a,
-.messageto a {
+.messageto span {
   display: block;
   font-size: 1.05rem;
   color: var(--links-color);
@@ -130,17 +135,17 @@ ul {
 
 .load a:hover,
 .filters a:hover,
-.messageto a:hover {
+.messageto span:hover {
   color: var(--main-font);
 }
 
-.messageto a i,
+.messageto span i,
 .filters a i {
   margin: var(--padding5) var(--padding10);
   transform: rotate(0);
 }
 
-.messageto a:hover i,
+.messageto span:hover i,
 .filters a:hover i {
   transform: rotate(90deg);
   transition: 1s;
@@ -405,4 +410,61 @@ textarea {
 
 .logo-footer a {
   font: normal 2rem Risque;
+}
+
+/*--------------------- signUp, log In -------------------------*/
+
+.signup,
+.loginForm {
+  height: 100%;
+  display: none;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.signup p,
+.loginForm p {
+  margin: var(--padding20) 0;
+}
+
+.signup form,
+.loginForm form {
+  width: 90%;
+  text-align: right;
+}
+
+label {
+  color: var(--login-color);
+}
+
+input {
+  width: 60%;
+  margin-left: var(--padding20);
+  border: 1px solid var(--login-color);
+  border-radius: var(--padding5);
+  padding: var(--padding5) var(--padding10);
+  outline: none;
+}
+
+.signup button,
+.loginForm button {
+  border-radius: var(--padding5);
+  padding: var(--padding10) var(--padding20);
+  border: 0;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.homeBtn {
+  background-color: var(--accent1);
+  border-color: var(--accent1);
+  color: white;
+  margin: 0 var(--height30);
+}
+
+.submit {
+  background-color: var(--accent2);
+  border-color: var(--accent2);
+  font-weight: bold;
 }

@@ -16,34 +16,51 @@
         <header class="header">
             <div class="container">
                 <div class="logo">
-                    <a href="#" title="js.talks();"><img src="icons/logo.png" alt="js.talks();"></a>
+                    <span title="js.talks();"><img src="icons/logo.png" alt="js.talks();"></span>
                 </div>
                 <div class="logins" id="login"></div>
                 <div class="user-mobile">
-                    <a href="" title="Username"><i class="fas fa-user"></i></a>
+                    <span title="Username"><i class="fas fa-user"></i></span>
                     <div class="login-mobile">
                         <div class="user-item">
-                            <a href="#" id="username"><strong>Username</strong></a>
+                            <a id="username"><strong>Username</strong></a>
                         </div>
                         <div class="user-item">
-                            <a href="" title="Log Out">Log Out</a>
+                            <a title="Log Out">Log Out</a>
                         </div>
                     </div>
                 </div>
             </div>
         </header>
         <main class="main container">
+            <div class="signup">
+                <h2>Sign Up</h2>
+                <p>Create a new user in chat JS.Talks();</p>
+                <form action="">
+                    <p><label>Login <input type="text" id="login-name"></label></p>
+                    <p><label>Password <input type="password" id="pwd"></label></p>
+                    <p><label>Confirm Password <input type="password" id="confirm-pwd"></label></p>
+                    <button type="button" class="homeBtn">Home</button><button type="button" class="submit" id="signupAction">Sign Up</button>
+                </form>
+            </div>
+            <div class="loginForm">
+                <h2>Log In</h2>
+                <p>Please enter your login and password</p>
+                <form action="">
+                    <p><label>Login <input type="text" id="login-name2"></label></p>
+                    <p><label>Password <input type="password" id="pwd2"></label></p>
+                    <button type="button" class="homeBtn" id="homeBtn">Home</button><button type="button" class="submit" id="loginAction">Log In</button>
+                </form>
+            </div>
             <div class="actions-top">
                 <div class="load">
-                    <a href="">More messages...</a>
+                    <span id="more" class="more">More messages...</span>
                 </div>
                 <div class="filters">
-                    <a href=""><i class="fas fa-angle-down"></i>Search / Filters</a>
+                    <span class="filter-link"><i class="fas fa-angle-down"></i>Search / Filters</span>
                     <div class="search">
                         <form action="">
-                            <select placeholder="Select user" id="find-user">
-                                <option value="1">Select user</option>
-                            </select>
+                            <input type="text" placeholder="Find user... " id="find-user">
                             <input type="date" placeholder="Choose a date">
                             <input type="text" placeholder="Search..">
                         </form>
@@ -65,17 +82,18 @@
             </div>
             <div class="actions-bottom">
                 <div class="messageto">
-                    <a href="">Message to<i class="fas fa-angle-up"></i></a>
+                    <span >Message to<i class="fas fa-angle-up"></i></span>
+                    <span id="displayTo"></span>
                     <div class="users" id="users">
                         <div class="user-item">
                             <div class="userpic main-chat"></div>
-                            <a href="#">JS.TALSK();</a>
+                            <p>JS.TALSK();</p>
                         </div>
                         <template id="user-template">
                             <div class="user-item">
                                 <div class="status"></div>
                                 <div class="userpic"></div>
-                                <a href="#">Username</a>
+                                <p>Username</p>
                             </div>
                         </template>
                     </div>
@@ -83,9 +101,9 @@
                 <div class="typing">
                     <span>Anna Kardash</span> is typing...
                 </div>
-                <form action="" class="typing-form">
-                    <textarea placeholder="Type a message"></textarea>
-                    <button type="submit" title="Send message"><i class="fas fa-paper-plane"></i></button>
+                <form class="typing-form">
+                    <textarea placeholder="Type a message" id="message-text"></textarea>
+                    <button type="button" title="Send message" id="messageSubmit"><i class="fas fa-paper-plane"></i></button>
                 </form>
             </div>
         </main>
@@ -99,7 +117,7 @@
             </div>
             
             <div class="logo-footer">
-                <a href="" title="js.talks();">js.talks();</a>
+                <span title="js.talks();">js.talks();</span>
             </div>
         </div>
     </footer>
