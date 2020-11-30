@@ -75,7 +75,7 @@ const messages = [
     id: '9',
     text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
     createdAt: new Date('2020-10-13T23:00:00'),
-    author: 'Serge Chiteenashvilli',
+    author: 'John Smitt',
     isPersonal: false,
     to: '',
   },
@@ -91,7 +91,7 @@ const messages = [
     id: '11',
     text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
     createdAt: new Date('2020-10-13T23:00:00'),
-    author: 'Vlad Ivanov',
+    author: 'test',
     isPersonal: true,
     to: 'John Smitt',
   },
@@ -139,7 +139,7 @@ const messages = [
     id: '17',
     text: 'Values are casted to numbers by casting to strings and then casting the strings to numbers. These processes',
     createdAt: new Date('2020-10-19T23:00:00'),
-    author: 'Irina Poddubnaya',
+    author: 'Anna Lebedeva',
     isPersonal: false,
     to: '',
   },
@@ -155,7 +155,7 @@ const messages = [
     id: '19',
     text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
     createdAt: new Date('2020-10-21T23:00:00'),
-    author: 'Lesley Knife',
+    author: 'Anna Lebedeva',
     isPersonal: false,
     to: '',
   },
@@ -164,8 +164,8 @@ const messages = [
     text: 'In JavaScript, an object is an associative array, augmented with a prototype (see below); each string key provides the name ',
     createdAt: new Date('2020-10-22T23:00:00'),
     author: 'Yuliya Philippova',
-    isPersonal: false,
-    to: '',
+    isPersonal: true,
+    to: 'Anna Lebedeva',
   },
   {
     id: '21',
@@ -179,7 +179,7 @@ const messages = [
     id: '22',
     text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
     createdAt: new Date('2020-10-21T23:00:00'),
-    author: 'Lesley Knife',
+    author: 'Anna Lebedeva',
     isPersonal: false,
     to: '',
   },
@@ -193,19 +193,21 @@ const messages = [
   },
   {
     id: '24',
-    text: 'Functions double as object constructors, along with their typical role.',
+    text: 'JavaScript is a dynamic computer programming language. It is lightweight and most commonly used as a part of web pages, whose implementations allow client-side script to interact with the user and make dynamic pages.',
     createdAt: new Date('2020-10-23T23:00:00'),
     author: 'Irvin Wood',
     isPersonal: false,
     to: '',
   },
 ];
+const currentUser = '';
+const users = [{ user: 'Yuliya Philippova', pwd: '12345' }, { user: 'Anna Lebedeva', pwd: '123' }, { user: 'John Smitt', pwd: '123' }, {user: "test", pwd: "123"}];
 class Message {
   constructor({
     id, createdAt, text, author, isPersonal, to,
   }) {
     this._id = id || `${+new Date()}`;
-    this._createdAt = createdAt || new Date();
+    this._createdAt = Date.parse(createdAt) || new Date();
     this._author = author;
     this.text = text;
     this.isPersonal = isPersonal || false;
@@ -273,9 +275,9 @@ class Model {
   getPage(skip = 0, top = 10, filterConfig = {}) {
     const filterObj = {
       author: (item, author) => author && item.author.toLowerCase().includes(author.toLowerCase()),
-      text: (item, text) => text && item.text.toLowerCase().includes(text.toLowerCase()),
       dateFrom: (item, dateFrom) => dateFrom && new Date(item.createdAt) > new Date(dateFrom),
       dateTo: (item, dateTo) => dateTo && new Date(item.createdAt) < new Date(dateTo),
+      text: (item, text) => text && item.text.toLowerCase().includes(text.toLowerCase()),
     };
 
     console.log('collection:', this._collection);
@@ -316,7 +318,7 @@ class Model {
         to: msg.to,
       });
       this._collection.push(newMessage);
-      console.log(this._collection);
+      //console.log('Add msg: ', this._collection);
       return true;
     }
     console.log('Incorrect parameters');
@@ -364,24 +366,24 @@ class HeaderView {
   }
 
   display(username = 'Guest') {
-    this.user.innerHTML = `<a href="" title="Username" id="username">${username}</a><span>|</span>
-                    <a href="" title="Log Out" id="login-logout" onclick="ctrl.setCurrentUser()">Log Out</a>`;
+    this.user.innerHTML = `<a title="Username" id="username">${username}</a><span>|</span>
+                    <a title="Log Out" id="login-logout" onclick="ctrl.logout()">Log Out</a>`;
 
     document.querySelector('.typing-form').classList.remove('disable');
     document.querySelector('.typing-form button').removeAttribute('disabled', true);
     document.querySelector('textarea').removeAttribute('disabled', true);
     document.querySelector('.messageto').classList.remove('disable');
-    document.querySelector('#find-user').removeAttribute('disabled', true);
+    document.querySelector('#findUser').removeAttribute('disabled', true);
 
     if (username === 'Guest') {
-      this.user.innerHTML = `<a href="" title="Username" id="username">${username}</a><span>|</span>
+      this.user.innerHTML = `<a title="Username" id="username">${username}</a><span>|</span>
                     <a title="Sign In" id="signup" onclick="ctrl.signupDisplay()">Sign Up</a><span>|</span>
-                    <a title="Log Out" id="login-logout" onclick="ctrl.loginDisplay()">Log In</a>`;
+                    <a title="Log In" id="login-logout" onclick="ctrl.loginDisplay()">Log In</a>`;
       document.querySelector('.typing-form').classList.add('disable');
       document.querySelector('.typing-form button').setAttribute('disabled', true);
       document.querySelector('textarea').setAttribute('disabled', true);
       document.querySelector('.messageto').classList.add('disable');
-      document.querySelector('#find-user').setAttribute('disabled', true);
+      document.querySelector('#findUser').setAttribute('disabled', true);
     }
   }
 }
@@ -408,19 +410,20 @@ class MessageView {
       if (item.author === currentUser) {
         elem.querySelector('.message').className = 'my-message';
         elem.querySelector('.message-actions').innerHTML = `
-          <a href="" title="Edit message"><i class="fas fa-marker"></i></a>
-          <a href="" title="Delete message"><i class="far fa-trash-alt"></i></a>
+          <a title="Edit message" data-message-id="${item.id}"onclick="ctrl.editMessage(this)"><i class="fas fa-marker"></i></a>
+          <a title="Delete message" onclick="ctrl.removeMessage(${item.id})"><i class="far fa-trash-alt"></i></a>
         `;
         elem.querySelector('.message-actions').classList.add('my-actions');
       }
       if (item.author === currentUser && item.isPersonal) {
         elem.querySelector('.message-from').textContent = `${item.author} to ${item.to}`;
       }
-      elem.querySelector('.message-date').textContent = `${item.createdAt}`;
+      let date = new Date(+`${item.createdAt}`);
+      elem.querySelector('.message-date').textContent = `${date.toDateString()},  ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()} `;
       fragment.appendChild(elem);
     });
 
-    this.list.appendChild(fragment);
+    this.list.appendChild(fragment);  
   }
 }
 class ActiveUsersView {
@@ -428,25 +431,11 @@ class ActiveUsersView {
     this.usersTo = document.getElementById(containerID);
   }
 
-  display(users, activeUsers) {
-    const fragment = new DocumentFragment();
-    const userTpl = document.getElementById('user-template');
-    activeUsers.forEach((item) => {
-      const elem = userTpl.content.cloneNode(true);
-      elem.querySelector('.user-item p').textContent = item.user;
-      elem.querySelector('.status').className = 'status active';
-      fragment.appendChild(elem);
+  display(users, currentUser) {
+    this.usersTo.innerHTML = `<div class="user-item"><div class="status main-chat"></div><p>TO ALL</p></div>`;
+    users.filter((item) => item.user !== currentUser).forEach((item) => {
+      this.usersTo.innerHTML += `<div class="user-item"><div class="status active"></div><p>${item.user}</p></div>`;
     });
-    this.usersTo.appendChild(fragment);
-
-    const inactiveUsers = users.filter((item) => !activeUsers.includes(item.user));
-    inactiveUsers.forEach((item) => {
-      const elem = userTpl.content.cloneNode(true);
-      elem.querySelector('.user-item p').textContent = item.user;
-      elem.querySelector('.status').className = 'status away';
-      fragment.appendChild(elem);
-    });
-    // this.usersTo.appendChild(fragment);
   }
 }
 class UserList {
@@ -464,26 +453,46 @@ class UserList {
   }
 }
 
-const currentUser = 'Yuliya Philippova';
-const users = [{ user: 'Yuliya Philippova', pwd: '12345' }, { user: 'Anna Lebedeva', pwd: '123' }, { user: 'John Smitt', pwd: '123' }];
+function loadStorage() {
+  localStorage.setItem('messages', JSON.stringify(messages));
+  localStorage.setItem('users', JSON.stringify(users));
+  localStorage.setItem('currentUser', JSON.stringify(currentUser));
+  console.log(`load Storage`);
+}
 class ChatController {
   constructor() {
     this.messages = [];
     this.users = [];
+    this.index = 1;
     this.model = new Model(this.restore());
     this.headerView = new HeaderView('login');
     this.messageView = new MessageView('message-list');
-    this.index = 1;
     this.signupBlock = document.querySelector('.signup');
     this.loginBlock = document.querySelector('.loginForm');
     this.activeUsers = new ActiveUsersView('users');
+
+    this.signupLogin = document.getElementById('signupLogin'); 
+    this.signupPwd = document.getElementById('signupPwd'); 
+    this.confirmPwd = document.getElementById('confirm-pwd'); 
+    this.signupAction = document.getElementById('signupAction');
+    this.loginLogin = document.getElementById('loginLogin'); 
+    this.loginPwd = document.getElementById('loginPwd'); 
+    this.loginAction = document.getElementById('loginAction');
+
+    this.messageText = document.querySelector('#message-text');
+    this.displayTo = document.getElementById('displayTo'); 
+    this.messageSubmit = document.querySelector('#messageSubmit');
+    this.msg = {};
   }
 
   setCurrentUser(currentUser) {
     this.headerView.display(currentUser);
     this.model.user = currentUser;
     this.messageView.display(this.model.getPage(), currentUser);
+    this.activeUsers.display(this.users, this.model.user);
+    this.saveToLocal();
     console.log('model.user: ', this.model.user);
+
   }
 
   moreMessages() {
@@ -502,14 +511,9 @@ class ChatController {
   }
 
   restore() {
-    try {
-      this.messages = JSON.parse(localStorage.getItem('messages'));
-      this.users = JSON.parse(localStorage.getItem('users'));
-    } catch (e) {
-      this.saveToLocal();
-      this.messages = messages;
-      this.users = users;
-    }
+    this.messages = JSON.parse(localStorage.getItem('messages')).map(item => new Message(item));
+    this.users = JSON.parse(localStorage.getItem('users'));
+    console.log(`restore`);
     return this.messages;
   }
 
@@ -521,12 +525,8 @@ class ChatController {
     document.querySelector('.actions-bottom').style.display = 'flex';
   }
 
-  homeBtn() {
-    document.querySelector('.homeBtn')
-      .addEventListener('click', () => {
-        ctrl.setCurrentUser();
-        this.defaultPage();
-      });
+  logout() {
+    this.setCurrentUser();
   }
 
   signupDisplay() {
@@ -535,47 +535,57 @@ class ChatController {
     document.querySelector('.actions-top').style.display = 'none';
     document.querySelector('.content').style.display = 'none';
     document.querySelector('.actions-bottom').style.display = 'none';
-    document.getElementById('login-name').style.borderColor = 'var(--login-color)';
-    document.getElementById('pwd').style.borderColor = 'var(--login-color)';
-    document.getElementById('confirm-pwd').style.borderColor = 'var(--login-color)';
-    this.homeBtn();
+    this.signupLogin.value = '';
+    this.signupPwd.value = '';
+    this.confirmPwd.value = '';
+    this.signupLogin.style.borderColor = 'var(--login-color)';
+    this.signupPwd.style.borderColor = 'var(--login-color)';
+    this.confirmPwd.style.borderColor = 'var(--login-color)';
+
+    document.querySelector('#signupHome')
+      .addEventListener('click', () => {
+        this.setCurrentUser();
+        this.defaultPage();
+      });
+    console.log('signupDisplay function');
   }
 
-  signupAction() {
-    const login = document.getElementById('login-name');
-    const pwd = document.getElementById('pwd');
-    const confirmPwd = document.getElementById('confirm-pwd');
-    const submitBtn = document.getElementById('signupAction');
+  signup() {
+    this.signupAction.addEventListener('click', () => {
+      console.log('login value - ', this.signupLogin.value);
+      console.log('pwd value - ', this.signupPwd.value);
+      console.log('confrm-pwd value - ', this.confirmPwd.value);
+      console.log('before signup users ', this.users);
 
-    submitBtn.addEventListener('click', () => {
-      console.log('login value - ', login.value);
-      console.log('pwd value - ', pwd.value);
-      console.log('confrm-pwd value - ', confirmPwd.value);
-      console.log(this.users);
-      if (!login.value || login.value === ' ') {
+      if (!this.signupLogin.value || this.signupLogin.value === ' ') {
         this.signupDisplay();
-        login.style.borderColor = 'var(--error-color)';
+        this.signupLogin.style.borderColor = 'var(--error-color)';
       }
-      if (!pwd.value || !confirmPwd.value || pwd.value !== confirmPwd.value) {
-        pwd.style.borderColor = 'var(--error-color)';
-        confirmPwd.style.borderColor = 'var(--error-color)';
-      } else if (this.users.filter((item) => item.user === login.value).length === 1) {
+      else if (this.users.filter((item) => item.user === this.signupLogin.value).length === 1) {
         this.loginDisplay();
-      } else {
-        login.style.borderColor = 'var(--login-color)';
-        pwd.style.borderColor = 'var(--login-color)';
-        confirmPwd.style.borderColor = 'var(--login-color)';
+      } 
+      else if (!this.signupPwd.value 
+          || !this.confirmPwd.value 
+          || this.signupPwd.value !== this.confirmPwd.value) {
+        this.signupLogin.style.borderColor = 'var(--login-color)';
+        this.signupPwd.style.borderColor = 'var(--error-color)';
+        this.confirmPwd.style.borderColor = 'var(--error-color)';
+      } 
+      else {
+        this.signupLogin.style.borderColor = 'var(--login-color)';
+        this.signupPwd.style.borderColor = 'var(--login-color)';
+        this.confirmPwd.style.borderColor = 'var(--login-color)';
         const pair = {};
-        pair.user = login.value;
-        pair.pwd = pwd.value;
+        pair.user = this.signupLogin.value;
+        pair.pwd = this.signupPwd.value;
         console.log(pair);
         this.users.push(pair);
         this.defaultPage();
-        this.setCurrentUser(login.value);
-        localStorage.setItem('currentUser', JSON.stringify(login.value));
-        localStorage.setItem('users', JSON.stringify(this.users));
+        this.model.user = this.signupLogin.value;
+        this.setCurrentUser(this.model.user);
+        this.saveToLocal();
       }
-      console.log(this.users);
+      console.log('after signup users ', this.users);
     });
   }
 
@@ -585,84 +595,166 @@ class ChatController {
     document.querySelector('.actions-top').style.display = 'none';
     document.querySelector('.content').style.display = 'none';
     document.querySelector('.actions-bottom').style.display = 'none';
+
+    this.loginLogin.value = '';
+    this.loginPwd.value = '';
+    this.loginLogin.style.borderColor = 'var(--login-color)';
+    this.loginPwd.style.borderColor = 'var(--login-color)';
+
     document.querySelector('#homeBtn')
       .addEventListener('click', () => {
-        ctrl.setCurrentUser();
+        this.setCurrentUser();
         this.defaultPage();
       });
   }
 
-  loginAction() {
-    const login2 = document.getElementById('login-name2');
-    const pwd2 = document.getElementById('pwd2');
-    const loginBtn = document.getElementById('loginAction');
-
-    loginBtn.addEventListener('click', () => {
-      console.log('login2 value - ', login2.value);
-      console.log('pwd2 value - ', pwd2.value);
-
-      if (this.users.filter((item) => item.user === login2.value) && this.users.filter((item) => item.pwd === pwd2.value)) {
-        console.log('match');
-        this.defaultPage();
-        this.setCurrentUser(login2.value);
-      } else if (this.users.filter((item) => item.user === login2.value).length !== 1) {
+  login() {
+    this.loginAction.addEventListener('click', () => {
+      console.log('login name value - ', this.loginLogin.value);
+      console.log('password value - ', this.loginPwd.value);
+      if (this.users.filter((item) => item.user === this.loginLogin.value).length !== 1) {
         this.loginDisplay();
-        login.style.borderColor = 'var(--error-color)';
-      } else if (this.users.filter((item) => item.pwd === pwd2.value).length !== 1) {
-        this.loginDisplay();
-        pwd2.style.borderColor = 'var(--error-color)';
+        this.loginLogin.style.borderColor = 'var(--error-color)';
+        console.log('login is not existed');
+      }
+      else if (this.users.filter((item) => item.user === this.loginLogin.value === 1)) {
+        let pair = this.users.filter((item) => item.user === this.loginLogin.value);
+        this.loginLogin.style.borderColor = 'var(--login-color)';
+        console.log(pair[0]);
+        if (pair[0].pwd === this.loginPwd.value) {
+          console.log('match');
+          this.model.user = this.loginLogin.value;
+          this.setCurrentUser(this.model.user);
+          this.defaultPage();
+          this.saveToLocal();
+        }
+        else {
+          this.loginPwd.style.borderColor = 'var(--error-color)';
+          console.log('Incorrect password');
+        }
       }
       console.log(this.users);
     });
   }
 
-  displayUsers() {
-    this.activeUsers.display(this.users, this.users);
-  }
-
   addMessage() {
-    const msg = {};
-    const messageText = document.querySelector('#message-text');
-    const messageSubmit = document.querySelector('#messageSubmit');
-
-    const usersList = document.querySelectorAll('.user-item p');
-    usersList.forEach((item) => console.log(item.textContent));
-
     const usersNode = document.getElementById('users');
     usersNode.addEventListener('click', (event) => {
-      document.getElementById('displayTo').innerHTML = event.target.textContent;
-      msg.to = event.target.textContent;
+      this.displayTo.innerHTML = event.target.textContent;
+      this.msg.to = event.target.textContent;
+      console.log('Choose whom: ', this.msg.to);
     });
+    this.messageSubmit.onclick = this.addItem;
+  }
 
-    messageSubmit.addEventListener('click', () => {
-      msg.text = messageText.value;
-      if (msg.to) {
-        msg.isPersonal = true;
+  addItem = () => {
+    this.msg.to = this.displayTo.innerHTML; 
+    this.msg.text = this.messageText.value;
+    if (!this.msg.to || this.msg.to === 'TO ALL') {
+        this.msg.isPersonal = false;
+        this.msg.to = '';
+    }
+      else {
+        this.msg.isPersonal = true;
+        this.msg.to = this.displayTo.innerHTML;
       }
-      msg.isPersonal = false;
-      msg.to = '';
-      console.log('message Text = ', messageText.value);
-      console.log('Msg.to = ', msg.to);
-      console.log('Msg.ispersonal = ',  msg.isPersonal);
-      console.log('Msg.author = ', this.model.user);
-      console.log(msg);
-      if (this.model.add(msg)) {
+      console.log('Ready to add', this.msg);
+      if (this.model.add(this.msg)) {
         this.messageView.display(this.model.getPage(), this.model.user);
-        console.log(msg);
-        messageText.value = '';
-        document.getElementById('displayTo').innerHTML = '';
+        console.log(this.msg);
+        this.messageText.value = '';
+        this.displayTo.innerHTML = '';
         localStorage.setItem('messages', JSON.stringify(this.messages));
       }
+  }
+
+  editMessage(e) {
+    const id = e.dataset.messageId;
+    console.log(e.dataset['messageId']); 
+    console.log(e.dataset.messageId); 
+
+    this.messageSubmit.onclick = null;
+    const usersNode = document.getElementById('users');
+
+    let editedMsg = this.messages.find(item => item.id === id.toString()); 
+    console.log(editedMsg);
+    this.messageText.value = editedMsg.text;
+    if (editedMsg.isPersonal) {
+      this.displayTo.innerHTML = editedMsg.to;
+    }
+    
+    usersNode.addEventListener('click', (event) => {
+      this.displayTo.innerHTML = event.target.textContent;
+      this.msg.to = event.target.textContent;
+      console.log('Choose whom: ', this.msg.to);
     });
+
+    this.messageSubmit.onclick = () => {
+      this.msg.to = this.displayTo.innerHTML;
+      this.msg.text = this.messageText.value;
+      if (!this.msg.to || this.msg.to === 'TO ALL') {
+        this.msg.isPersonal = false;
+        this.msg.to = '';
+      }
+      else {
+        this.msg.isPersonal = true;
+        this.msg.to = this.displayTo.innerHTML;
+      }
+      console.log('Ready to edit', this.msg);
+      if (this.model.edit(id.toString(), this.msg)) {
+        this.messageView.display(this.model.getPage(), this.model.user);
+        this.messageText.value = '';
+        this.displayTo.innerHTML = '';
+        localStorage.setItem('messages', JSON.stringify(this.messages));
+        
+      }
+      this.messageSubmit.onclick = this.addItem;
+    }
+    
+  }
+
+  filter() {
+    const findUser = document.getElementById('findUser');
+    const dateFrom = document.getElementById('dateFrom');
+    const dateTo = document.getElementById('dateTo');
+    const search = document.getElementById('search');
+
+    let filterConfig = {}; 
+    document.querySelector('#find').onclick = () => {
+      filterConfig.author = findUser.value; 
+      filterConfig.dateFrom = dateFrom.value; 
+      filterConfig.dateTo = dateTo.value; 
+      filterConfig.text = search.value;
+      Object.keys(filterConfig).forEach( key => {
+        if (filterConfig[key] === '') {
+          delete filterConfig[key];
+        }
+      });
+      console.log(filterConfig); 
+      this.messageView.display(this.model.getPage(0, Infinity, filterConfig), this.model.user);
+      findUser.value = '';
+      dateFrom.value = '';
+      dateTo.value = '';
+      search.value = '';
+    }
+  }
+
+  removeMessage(id) {
+    console.log(id);
+    if (window.confirm('Are you sure you want to delete message?')) {
+      this.model.remove(id.toString());
+      this.messageView.display(this.model.getPage(), this.model.user);
+      this.saveToLocal();
+    }
   }
 }
 
+// загружаем данные в LocalStorage
+loadStorage();
 const ctrl = new ChatController();
-ctrl.saveToLocal();
-ctrl.restore();
 ctrl.setCurrentUser('Yuliya Philippova');
 ctrl.moreMessages();
-ctrl.signupAction();
-ctrl.loginAction();
-ctrl.displayUsers();
-ctrl.addMessage();
+ctrl.signup();
+ctrl.login();
+ctrl.addMessage(); 
+ctrl.filter();
