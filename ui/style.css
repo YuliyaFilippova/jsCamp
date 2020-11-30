@@ -125,28 +125,28 @@ ul {
 
 /*--------------------- Load messages block -------------------------*/
 
-.load a,
-.filters a,
+.load span,
+.filters span,
 .messageto span {
   display: block;
   font-size: 1.05rem;
   color: var(--links-color);
 }
 
-.load a:hover,
-.filters a:hover,
+.load span:hover,
+.filters span:hover,
 .messageto span:hover {
   color: var(--main-font);
 }
 
 .messageto span i,
-.filters a i {
+.filters span i {
   margin: var(--padding5) var(--padding10);
   transform: rotate(0);
 }
 
 .messageto span:hover i,
-.filters a:hover i {
+.filters span:hover i {
   transform: rotate(90deg);
   transition: 1s;
 }
@@ -190,8 +190,7 @@ ul {
   padding: 0 var(--padding5);
 }
 
-.search form input,
-.search form select {
+.search form input {
   width: var(--width100);
   height: var(--height30);
   border: 1px solid var(--search-color);
@@ -205,7 +204,35 @@ input::-webkit-calendar-picker-indicator {
   opacity: 0.3;
 }
 
+.search label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-right: 0;
+}
+
+#dateFrom,
+#dateTo {
+  width: 60%;
+}
+
+.search p {
+  text-align: right;
+}
+
 /*--------------------- Message To block -------------------------*/
+
+.messageto span {
+  display: inline;
+}
+
+#messageAdd {
+  display: block;
+}
+
+#messageEdit {
+  display: none;
+}
 
 .actions-bottom {
   margin: 0 0 var(--padding10);
@@ -228,7 +255,7 @@ input::-webkit-calendar-picker-indicator {
 
 .user-item {
   position: relative;
-  padding: var(--padding5) 1.5rem;
+  padding: var(--padding10) var(--padding20);
   background: linear-gradient(180deg, #ffffff 0%, #f2f2f2 100%);
   display: flex;
   flex-flow: row nowrap;
@@ -237,21 +264,22 @@ input::-webkit-calendar-picker-indicator {
   white-space: nowrap;
 }
 
-.user-item a {
+.user-item p {
   font-size: 0.9rem;
   margin: 0 0.5rem;
+  color: var(--links-color);
+  cursor: pointer;
 }
 
 .user-item:hover {
   background: linear-gradient(180deg, #f2f2f2 50%, #f2f2f2 100%);
-  cursor: pointer;
 }
 
-.user-item:hover a:hover {
+.user-item:hover p:hover {
   color: var(--main-font-hover);
 }
 
-.userpic {
+.status {
   width: var(--userpic-d);
   height: var(--userpic-d);
   border: 1px solid var(--accent1);
@@ -268,18 +296,12 @@ input::-webkit-calendar-picker-indicator {
   border-color: var(--accent1);
 }
 
-.status {
-  position: absolute;
-  top: 1.3rem;
-  left: 2.7rem;
-  width: var(--status-d);
-  height: var(--status-d);
-  border-radius: 50%;
-  z-index: 100;
+.main-chat + p {
+  color: var(--main-font);
 }
 
 .active {
-  background: rgb(42, 153, 42);
+  background: var(--status-active);
 }
 
 .away {
@@ -448,7 +470,9 @@ input {
 }
 
 .signup button,
-.loginForm button {
+.loginForm button,
+.confirmation button,
+.search button {
   border-radius: var(--padding5);
   padding: var(--padding10) var(--padding20);
   border: 0;
@@ -467,4 +491,57 @@ input {
   background-color: var(--accent2);
   border-color: var(--accent2);
   font-weight: bold;
+}
+
+/*--------------------- Confirmation -------------------------*/
+
+.modal-wrapper {
+  position: fixed;
+  display: none;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 100;
+}
+
+.confirmation {
+  z-index: 5;
+  width: 350px;
+  height: 160px;
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: space-around;
+  bottom: 1.7rem;
+  border: 1px solid var(--search-color);
+  border-radius: var(--padding5);
+  background-color: white;
+}
+
+.overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.confirmation p:first-child {
+  text-align: center;
+  text-transform: uppercase;
+  padding: var(--padding10) 0;
+  background-color: var(--accent1);
+  border-radius: var(--padding5) var(--padding5) 0 0;
+  color: white;
+}
+
+.confirmation p:nth-child(2) {
+  margin-top: var(--padding20);
+  padding: 0 var(--padding20);
+}
+
+.confirmation p:last-child {
+  margin: var(--padding20) 0;
+  padding: 0 var(--padding20);
+  text-align: right;
 }

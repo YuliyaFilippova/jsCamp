@@ -13,6 +13,17 @@
     
 </head>
 <body class="body">
+    <div class="modal-wrapper">
+        <div class="confirmation">
+            <p>Confirmation</p>
+            <p>Are you sure you want to delete?</p>
+            <p>
+                <button class="homeBtn">Cancel</button>
+                <button class="submit">Ok</button>
+            </p>
+        </div>
+        <div class="overlay"></div>
+    </div>
         <header class="header">
             <div class="container">
                 <div class="logo">
@@ -37,18 +48,18 @@
                 <h2>Sign Up</h2>
                 <p>Create a new user in chat JS.Talks();</p>
                 <form action="">
-                    <p><label>Login <input type="text" id="login-name"></label></p>
-                    <p><label>Password <input type="password" id="pwd"></label></p>
+                    <p><label>Login <input type="text" id="signupLogin"></label></p>
+                    <p><label>Password <input type="password" id="signupPwd"></label></p>
                     <p><label>Confirm Password <input type="password" id="confirm-pwd"></label></p>
-                    <button type="button" class="homeBtn">Home</button><button type="button" class="submit" id="signupAction">Sign Up</button>
+                    <button type="button" class="homeBtn" id="signupHome">Home</button><button type="button" class="submit" id="signupAction">Sign Up</button>
                 </form>
             </div>
             <div class="loginForm">
                 <h2>Log In</h2>
                 <p>Please enter your login and password</p>
                 <form action="">
-                    <p><label>Login <input type="text" id="login-name2"></label></p>
-                    <p><label>Password <input type="password" id="pwd2"></label></p>
+                    <p><label>Login <input type="text" id="loginLogin"></label></p>
+                    <p><label>Password <input type="password" id="loginPwd"></label></p>
                     <button type="button" class="homeBtn" id="homeBtn">Home</button><button type="button" class="submit" id="loginAction">Log In</button>
                 </form>
             </div>
@@ -59,10 +70,12 @@
                 <div class="filters">
                     <span class="filter-link"><i class="fas fa-angle-down"></i>Search / Filters</span>
                     <div class="search">
-                        <form action="">
-                            <input type="text" placeholder="Find user... " id="find-user">
-                            <input type="date" placeholder="Choose a date">
-                            <input type="text" placeholder="Search..">
+                        <form>
+                            <input type="text" placeholder="Find user... " id="findUser">
+                            <label>Date from <input type="date" placeholder="Date from" id="dateFrom"></label>
+                            <label>Date to<input type="date" placeholder="Date to" id="dateTo"></label>
+                            <input type="text" placeholder="Search.." id="search">
+                            <p><button type="button" class="submit" id="find">Find</button></p>
                         </form>
                     </div>
                 </div>
@@ -79,6 +92,7 @@
                     </li>
                 </template>
                 <ul id='message-list'></ul>
+                
             </div>
             <div class="actions-bottom">
                 <div class="messageto">
@@ -86,16 +100,15 @@
                     <span id="displayTo"></span>
                     <div class="users" id="users">
                         <div class="user-item">
-                            <div class="userpic main-chat"></div>
-                            <p>JS.TALSK();</p>
+                            <div class="status main-chat"></div>
+                            <p>TO ALL</p>
                         </div>
-                        <template id="user-template">
+                        <!--template id="user-template">
                             <div class="user-item">
                                 <div class="status"></div>
-                                <div class="userpic"></div>
                                 <p>Username</p>
                             </div>
-                        </template>
+                        </template-->
                     </div>
                 </div>
                 <div class="typing">
@@ -103,7 +116,7 @@
                 </div>
                 <form class="typing-form">
                     <textarea placeholder="Type a message" id="message-text"></textarea>
-                    <button type="button" title="Send message" id="messageSubmit"><i class="fas fa-paper-plane"></i></button>
+                    <button type="button" title="Add message" id="messageSubmit"><i class="fas fa-paper-plane"></i></button>
                 </form>
             </div>
         </main>

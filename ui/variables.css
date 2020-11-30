@@ -14,6 +14,7 @@
   --disable-color: rgba(79, 142, 169, 0.25);
   --login-color: rgba(79, 142, 169, 0.5);
   --error-color: #bd6844;
+  --status-active: rgba(42, 153, 42, 0.5);
 
   --width100: 100%;
   --width80: 80%;
@@ -21,7 +22,7 @@
   --width50: 50%;
   --width240: 15rem;
 
-  --userpic-d: 1.7rem;
+  --userpic-d: 0.7rem;
   --status-d: 0.7rem;
 
   --height60: 4rem; /* ~ 60px */
