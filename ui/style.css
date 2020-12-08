@@ -57,7 +57,7 @@ a,
 a:hover,
 .more:hover,
 .filter-link:hover,
-.logins a:hover {
+.logins span:hover {
   color: var(--main-font-hover);
 }
 
@@ -66,16 +66,17 @@ ul {
 }
 
 .logins,
-.logins a {
+.logins span {
   color: white;
   font-size: 1.3rem;
+  cursor: pointer;
 }
-.logins a:first-child {
+.logins span:first-child {
   font-weight: bold;
 }
 
-.logins a {
-  margin: 0 1rem;
+.logins span {
+  margin: 0 0.3rem;
 }
 
 .user-mobile {
@@ -100,6 +101,7 @@ ul {
 
 .content {
   height: calc(100% - var(--height60));
+  flex-direction: column;
   overflow-y: auto;
 }
 
@@ -247,10 +249,33 @@ input::-webkit-calendar-picker-indicator {
   border: 1px solid var(--search-color);
   border-radius: var(--padding5);
   background-color: white;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.users::-webkit-scrollbar {
+  height: var(--scrollbar-size);
+  width: var(--scrollbar-size);
+  border-radius: var(--padding5);
+}
+
+.users::-webkit-scrollbar-track {
+  background-color: var(--scrollbar-track-color);
+  border-radius: var(--padding10);
+}
+
+.users::-webkit-scrollbar-thumb:vertical {
+  border-radius: var(--padding10);
+  background: var(--scrollbar-thumb-color);
+}
+
+.users::-webkit-scrollbar-thumb:vertical:hover {
+  background-color: var(--scrollbar-thumb-color-hover);
 }
 
 .messageto:hover .users {
   display: block;
+  overflow: auto;
 }
 
 .user-item {
@@ -360,6 +385,7 @@ textarea {
 }
 
 .typing {
+  display: none;
   border: 1px solid var(--header-bg);
   border-radius: 1rem;
   padding: var(--padding2) var(--padding20);
@@ -472,7 +498,8 @@ input {
 .signup button,
 .loginForm button,
 .confirmation button,
-.search button {
+.search button,
+.error button {
   border-radius: var(--padding5);
   padding: var(--padding10) var(--padding20);
   border: 0;
@@ -508,14 +535,17 @@ input {
 
 .confirmation {
   z-index: 5;
+  position: absolute;
+  top: 40%;
+  left: 40%;
   width: 350px;
   height: 160px;
   display: flex;
   flex-flow: column wrap;
   justify-content: space-around;
   bottom: 1.7rem;
-  border: 1px solid var(--search-color);
-  border-radius: var(--padding5);
+  border: 1px solid var(--accent1);
+  border-radius: var(--padding10);
   background-color: white;
 }
 
@@ -544,4 +574,24 @@ input {
   margin: var(--padding20) 0;
   padding: 0 var(--padding20);
   text-align: right;
+}
+
+/*--------------------- Error block -------------------------*/
+.error {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  padding: 0 var(--padding20);
+}
+
+.error h2 {
+  font-size: 2rem;
+  color: var(--accent1);
+}
+
+.error p {
+  color: var(--accent1);
+  margin: var(--height30) 0;
 }
